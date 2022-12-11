@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Admin Panel</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -21,8 +21,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
+                    <li>@Html.ActionLink("Products", "Index", "Products")</li>
+                    <li>@Html.ActionLink("Rols", "Index", "Rols")</li>
                 </ul>
                 <ul class="nav navbar-nav" style="float:right;">
                     @{
@@ -30,7 +31,7 @@
                         {
                             var ticket = FormsAuthentication.Decrypt(HttpContext.Current.User.Identity.Name);
                             <li><a href="#">@ticket.UserData.Split(';')[0]</a></li>
-                            <li>@Html.ActionLink("LogOut", "Logout", "Login")</li>
+                            <li><a href="/Login/Logout">Logout</a></li>
                         }
                         else
                         {

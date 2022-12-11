@@ -18,31 +18,31 @@ namespace BBGymManagement.Controllers
         {
             var validation = true;
 
-            if (string.IsNullOrEmpty(model.Name.Trim()))
+            if (string.IsNullOrEmpty(model.Name?.Trim()))
             {
                 validation = false;
             }
-            if (string.IsNullOrEmpty(model.Surname.Trim()))
+            if (string.IsNullOrEmpty(model.Surname?.Trim()))
             {
                 validation = false;
             }
-            if (string.IsNullOrEmpty(model.Email.Trim()))
+            if (string.IsNullOrEmpty(model.Email?.Trim()))
             {
                 validation = false;
             }
-            if (string.IsNullOrEmpty(model.SecurityQuestion.Trim()))
+            if (string.IsNullOrEmpty(model.SecurityQuestion?.Trim()))
             {
                 validation = false;
             }
-            if (string.IsNullOrEmpty(model.SecurityAnswer.Trim()))
+            if (string.IsNullOrEmpty(model.SecurityAnswer?.Trim()))
             {
                 validation = false;
             }
-            if (string.IsNullOrEmpty(model.Password.Trim()))
+            if (string.IsNullOrEmpty(model.Password?.Trim()))
             {
                 validation = false;
             }
-            if (string.IsNullOrEmpty(model.VerPassword.Trim()))
+            if (string.IsNullOrEmpty(model.VerPassword?.Trim()))
             {
                 validation = false;
             }

@@ -1,7 +1,9 @@
-﻿using BBGymManagement.Services;
+﻿using BBGymManagement.Models.Entities;
+using BBGymManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -15,7 +17,8 @@ namespace BBGymManagement.Controllers
     public class LoginController : Controller
     {
         CustomerService _customerService = new CustomerService();
-        RolService _rolService=new RolService();
+        RolService _rolService = new RolService();
+
         // GET: Login
         public ActionResult Index()
         {
@@ -23,43 +26,76 @@ namespace BBGymManagement.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string email,string password)
+        [Obsolete]
+        public ActionResult Index(string email, string password)
         {
+
             if (_customerService.IsAdmin(email, password))
             {
-                var user = _customerService.Get(x=>x.Email==email).FirstOrDefault();
+                var user = _customerService.Get(x => x.Email == email).FirstOrDefault();
                 var role = _rolService.GetById(user.RolId).Name;
-                FormsAuthentication.SetAuthCookie(user.Name,true);
-                var identity = new System.Security.Principal.GenericIdentity(user.Name);
-                var principal = new GenericPrincipal(identity,new string[]{role});
-                HttpContext.User = principal;
-                Thread.CurrentPrincipal = principal;
+                var now = DateTime.UtcNow.ToLocalTime();
+                string userData = email + ";" + role;
+                var ticket = new FormsAuthenticationTicket(1, email, now, now.Add(FormsAuthentication.Timeout), true, userData, FormsAuthentication.FormsCookiePath);
+                var encryptedTicket = FormsAuthentication.Encrypt(ticket);
 
-                return RedirectToAction("Index","Home");
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                cookie.HttpOnly = true;
+                if (ticket.IsPersistent)
+                {
+                    cookie.Expires = ticket.Expiration;
+                }
+                cookie.Secure = FormsAuthentication.RequireSSL;
+                cookie.Path = FormsAuthentication.FormsCookiePath;
+                if (FormsAuthentication.CookieDomain != null)
+                {
+                    cookie.Domain = FormsAuthentication.CookieDomain;
+                }
+
+                string encrypetedTicket = FormsAuthentication.Encrypt(ticket);
+                FormsAuthentication.SetAuthCookie(encrypetedTicket, false);
+                
+                return Redirect("~/Admin/Home/Index");
             }
             else if (_customerService.IsCustomer(email, password))
             {
                 var user = _customerService.Get(x => x.Email == email).FirstOrDefault();
                 var role = _rolService.GetById(user.RolId).Name;
-                FormsAuthentication.SetAuthCookie(user.Name, true);
-                var identity = new System.Security.Principal.GenericIdentity(user.Name);
-                var principal = new GenericPrincipal(identity, new string[] { role });
-                HttpContext.User = principal;
-                Thread.CurrentPrincipal = principal;
-                return RedirectToAction("Index", "Home");
+
+                var now = DateTime.UtcNow.ToLocalTime();
+                var ticket = new FormsAuthenticationTicket(1, email, now, now.Add(FormsAuthentication.Timeout), true, email, FormsAuthentication.FormsCookiePath);
+                var encryptedTicket = FormsAuthentication.Encrypt(ticket);
+
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                cookie.HttpOnly = true;
+                if (ticket.IsPersistent)
+                {
+                    cookie.Expires = ticket.Expiration;
+                }
+                cookie.Secure = FormsAuthentication.RequireSSL;
+                cookie.Path = FormsAuthentication.FormsCookiePath;
+                if (FormsAuthentication.CookieDomain != null)
+                {
+                    cookie.Domain = FormsAuthentication.CookieDomain;
+                }
+
+                string encrypetedTicket = FormsAuthentication.Encrypt(ticket);
+                FormsAuthentication.SetAuthCookie(encrypetedTicket, false);
+
+                return Redirect("~/Home/Index");
             }
             else
             {
-                TempData["LoginError"] = "Username or password is wrong";
+                TempData["LoginError"] = "Email or password is wrong";
                 return View();
             }
-           
+
         }
 
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
