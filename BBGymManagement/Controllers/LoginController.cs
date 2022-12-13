@@ -61,9 +61,9 @@ namespace BBGymManagement.Controllers
             {
                 var user = _customerService.Get(x => x.Email == email).FirstOrDefault();
                 var role = _rolService.GetById(user.RolId).Name;
-
+                string userData = email + ";" + role;
                 var now = DateTime.UtcNow.ToLocalTime();
-                var ticket = new FormsAuthenticationTicket(1, email, now, now.Add(FormsAuthentication.Timeout), true, email, FormsAuthentication.FormsCookiePath);
+                var ticket = new FormsAuthenticationTicket(1, email, now, now.Add(FormsAuthentication.Timeout), true, userData, FormsAuthentication.FormsCookiePath);
                 var encryptedTicket = FormsAuthentication.Encrypt(ticket);
 
                 var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);

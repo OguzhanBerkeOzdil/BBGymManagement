@@ -12,11 +12,39 @@ using BBGymManagement.Services;
 
 namespace BBGymManagement.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class ProductsController : Controller
     {
         private ProductService _productService = new ProductService();
 
-        // GET: Admin/Products
+
+        #region HelperMethod
+
+        private bool IsValidProduct(Product product)
+        {
+            bool validation = true;
+            if (string.IsNullOrEmpty(product.Name?.Trim()))
+            {
+                validation = false;
+            }
+            if (string.IsNullOrEmpty(product.Description?.Trim()))
+            {
+                validation = false;
+            }
+            if (product.Price <= 0)
+            {
+                validation = false;
+            }
+            if (product.Day <= 0)
+            {
+                validation = false;
+            }
+
+            return validation;
+        }
+        #endregion
+
+
         public ActionResult Index()
         {
             return View(_productService.GetAll());
@@ -43,17 +71,23 @@ namespace BBGymManagement.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Product product)
+        public ActionResult Create(HttpPostedFileBase file, Product product)
         {
-            if (ModelState.IsValid)
+
+            if (IsValidProduct(product) && file != null)
             {
-                _productService.Add(product);   
-               
+                string picture = System.IO.Path.GetFileName(file.FileName);
+                string path = System.IO.Path.Combine("/Content/Images", picture);
+
+                file.SaveAs(path);
+
+                product.ImageUrl = path;
+
+                _productService.Add(product);
+
                 return RedirectToAction("Index");
             }
 
@@ -76,14 +110,21 @@ namespace BBGymManagement.Areas.Admin.Controllers
         }
 
         // POST: Admin/Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(Product product, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid)
+            if (IsValidProduct(product))
             {
+                if (file != null)
+                {
+                    string picture = System.IO.Path.GetFileName(file.FileName);
+                    string path = System.IO.Path.Combine("/Content/Images/", picture);
+
+                    file.SaveAs(System.IO.Path.Combine(Server.MapPath("~/Content/Images/"), picture));
+
+                    product.ImageUrl = path;
+                }
                 _productService.Update(product, product.Id);
                 return RedirectToAction("Index");
             }

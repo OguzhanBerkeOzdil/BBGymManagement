@@ -12,6 +12,7 @@ using BBGymManagement.Services;
 
 namespace BBGymManagement.Areas.Admin.Controllers
 {
+    [AdminAuthorize]
     public class RolsController : Controller
     {
         private RolService _rolService = new RolService();

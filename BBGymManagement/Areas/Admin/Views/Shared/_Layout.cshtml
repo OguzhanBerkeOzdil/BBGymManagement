@@ -16,11 +16,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("BBGYM Admin Panel", "Index", "Home", new { area = "Admin" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                   
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Products", "Index", "Products")</li>
                     <li>@Html.ActionLink("Rols", "Index", "Rols")</li>
@@ -29,6 +29,7 @@
                     @{
                         if (HttpContext.Current.User.Identity.IsAuthenticated)
                         {
+                            <li><a href="/Home/Index">Shop</a></li>
                             var ticket = FormsAuthentication.Decrypt(HttpContext.Current.User.Identity.Name);
                             <li><a href="#">@ticket.UserData.Split(';')[0]</a></li>
                             <li><a href="/Login/Logout">Logout</a></li>

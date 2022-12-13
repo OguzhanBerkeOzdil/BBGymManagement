@@ -8,25 +8,19 @@ namespace BBGymManagement.Areas.Admin.Controllers
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public class AdminAuthorizeAttribute : FilterAttribute, IAuthorizationFilter
     {
-        private readonly HttpContext _httpContext;
-        public AdminAuthorizeAttribute()
-        {
-            this._httpContext = HttpContext.Current;
-        }
-
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (_httpContext == null ||
-                _httpContext.Request == null ||
-                !_httpContext.Request.IsAuthenticated ||
-                !(_httpContext.User.Identity is FormsIdentity))
+            if (filterContext.HttpContext == null ||
+                filterContext.HttpContext.Request == null ||
+                !filterContext.HttpContext.Request.IsAuthenticated ||
+                !(filterContext.HttpContext.User.Identity is FormsIdentity))
             {
                 filterContext.Result = new HttpUnauthorizedResult();
             }
 
-            if (_httpContext.User != null && _httpContext.User.Identity != null && _httpContext.User.Identity is FormsIdentity)
+            if (filterContext.HttpContext.User != null && filterContext.HttpContext.User.Identity != null && filterContext.HttpContext.User.Identity is FormsIdentity)
             {
-                var formsIdentity = (FormsIdentity)_httpContext.User.Identity;
+                var formsIdentity = (FormsIdentity)filterContext.HttpContext.User.Identity;
 
                 if (formsIdentity.Ticket == null)
                     throw new ArgumentNullException("ticket");
