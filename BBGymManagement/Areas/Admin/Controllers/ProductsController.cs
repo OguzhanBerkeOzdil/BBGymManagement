@@ -80,9 +80,9 @@ namespace BBGymManagement.Areas.Admin.Controllers
             if (IsValidProduct(product) && file != null)
             {
                 string picture = System.IO.Path.GetFileName(file.FileName);
-                string path = System.IO.Path.Combine("/Content/Images", picture);
+                string path = System.IO.Path.Combine("/Content/Images/", picture);
 
-                file.SaveAs(path);
+                file.SaveAs(System.IO.Path.Combine(Server.MapPath("~/Content/Images/"), picture));
 
                 product.ImageUrl = path;
 
