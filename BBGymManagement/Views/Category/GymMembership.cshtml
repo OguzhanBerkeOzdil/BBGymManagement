@@ -1,0 +1,24 @@
+﻿@model List<BBGymManagement.MVVM.ProductViewModel>
+@{
+    ViewBag.Title = "GymMembership";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GymMembership</h2>
+<div class="container-fluid">
+    @{
+        foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card" style="width: 15rem;">
+                    <img src="@item.ImageUrl" class="img-fluid img-thumbnail img-responsive" alt="@item.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Price $</p>
+                        <a href="#" class="btn btn-primary">Add To Cart</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

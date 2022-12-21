@@ -39,6 +39,10 @@ namespace BBGymManagement.Areas.Admin.Controllers
             {
                 validation = false;
             }
+            if (product.CategoryId == 0)
+            {
+                validation = false;
+            }
 
             return validation;
         }

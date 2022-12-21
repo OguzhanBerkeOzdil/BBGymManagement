@@ -12,6 +12,14 @@ namespace BBGymManagement.Models.Entities
         public decimal Price { get; set; }
         public int Day { get; set; }
         public string ImageUrl { get; set; }
-      
+        public CategoryId CategoryId { get; set; }
+
+    }
+
+    public enum CategoryId
+    {
+        GymMembership=10,
+        
+        PersonalTrainer=20
     }
 }
