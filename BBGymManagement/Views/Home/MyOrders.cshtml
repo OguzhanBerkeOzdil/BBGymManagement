@@ -1,0 +1,36 @@
+﻿@model List<BBGymManagement.MVVM.CustomerOrdersModel>
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int sayac = 1;
+}
+
+<h2>My Orders</h2>
+
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Finish Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@sayac</th>
+                <td><a href="/Product/Detail/@item.Product.Id"><img style="height:150px" src="@item.Product.ImageUrl" /></a></td>
+                <td>@item.Product.Name</td>
+                <td>@Enum.GetName(typeof(BBGymManagement.Models.Entities.CategoryId), item.Product.CategoryId)</td>
+                <td>@item.TotalPrice $</td>
+                <td>@item.FinishTime</td>
+            </tr>
+            sayac++;
+        }
+    </tbody>
+</table>
+

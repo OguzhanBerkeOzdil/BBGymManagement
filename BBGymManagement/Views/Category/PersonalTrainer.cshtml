@@ -10,11 +10,13 @@
         {
             <div class="col-md-4">
                 <div class="card" style="width: 15rem;">
-                    <img src="@item.ImageUrl" class="img-fluid img-thumbnail img-responsive" alt="@item.Name">
+                    <a href="/Product/Detail/@item.Id">
+                        <img src="@item.ImageUrl" class="img-fluid img-thumbnail img-responsive" alt="@item.Name">
+                    </a>
                     <div class="card-body">
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-text">@item.Price $</p>
-                        <a href="#" class="btn btn-primary">Add To Cart</a>
+                        <a href="/Home/Checkout/@item.Id" class="btn btn-primary">Buy</a>
                     </div>
                 </div>
             </div>

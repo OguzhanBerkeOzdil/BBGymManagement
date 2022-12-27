@@ -1,0 +1,27 @@
+﻿@model BBGymManagement.MVVM.ProductDetailModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="custom-card">
+        <div class="container-fliud">
+            <div class="wrapper row">
+                <div class="preview col-md-6">
+                    <div class="preview-pic tab-content">
+                        <div class="tab-pane active" id="pic-1"><img src="@Model.ImageUrl" /></div>
+                    </div>
+                </div>
+                <div class="details col-md-6">
+                    <h3 class="product-title">@Model.Name</h3>
+                    <p class="product-description">@Model.Description</p>
+                    <p class="product-description">Day:@Model.Day</p>
+                    <h4 class="price">Price: <span>@Model.Price $</span></h4>
+                    <div class="action">
+                        <a href="/Home/Checkout/@Model.Id" class="btn btn-primary">Buy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

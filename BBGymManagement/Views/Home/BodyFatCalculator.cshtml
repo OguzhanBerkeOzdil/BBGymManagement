@@ -1,0 +1,93 @@
+﻿@model BBGymManagement.MVVM.BodyFatCalculatorModel
+
+@{
+    ViewBag.Title = "BodyFatCalculator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Body Fat Calculator</h2>
+
+@using (Html.BeginForm("BodyFatCalculator", "Home", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Sex, new { @class = "form-select form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NeckCircumference, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NeckCircumference, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WaistCircumference, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WaistCircumference, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HipCircumference, htmlAttributes: new { @class = "control-label col-md-2", @id = "LabelHipCircumference" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HipCircumference, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Calculate" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<div class="bg-success text-center" style="padding:20px" id="result"> 
+    <label style="font-weight:bold; font-size:20px">Body fat: @ViewBag.BodyFat %</label>
+    <div>
+        <p>
+            The US Navy body fat standards
+            The limit of body fat percentage for US Navy service members:
+        </p>
+
+        <p>Age 18 to 21 - 22% for males, 33% for females;</p>
+        <p>Age 22 to 29 - 23% for males, 34% for females; </p>
+        <p>Age 30 to 39 - 24% for males, 35% for females; </p>
+        <p>Age over 40 - 26% for males, 36% for females.  </p>
+    </div>
+</div>
+<script>
+    $("#HipCircumference").hide();
+    $("#LabelHipCircumference").hide();
+    $("#result").hide();
+    if (@ViewBag.BodyFat > 0) {
+        $("#result").show();
+    }
+    $("#Sex").on('change', function () {
+        if (this.value == 20) {
+            $("#LabelHipCircumference").show();
+            $("#HipCircumference").show();
+        }
+        else {
+            $("#HipCircumference").hide();
+            $("#LabelHipCircumference").hide();
+        }
+    });
+</script>

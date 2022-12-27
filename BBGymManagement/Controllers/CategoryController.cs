@@ -20,7 +20,7 @@ namespace BBGymManagement.Controllers
             var model = new List<ProductViewModel>();
             foreach (var item in products)
             {
-                model.Add(new ProductViewModel { Name=item.Name,Price=item.Price,ImageUrl=item.ImageUrl});
+                model.Add(new ProductViewModel { Id=item.Id, Name=item.Name,Price=item.Price,ImageUrl=item.ImageUrl});
             }
             return View(model);  
         }
@@ -31,7 +31,7 @@ namespace BBGymManagement.Controllers
             var model = new List<ProductViewModel>();
             foreach (var item in products)
             {
-                model.Add(new ProductViewModel { Name = item.Name, Price = item.Price, ImageUrl = item.ImageUrl });
+                model.Add(new ProductViewModel {Id=item.Id, Name = item.Name, Price = item.Price, ImageUrl = item.ImageUrl });
             }
             return View(model);
         }
