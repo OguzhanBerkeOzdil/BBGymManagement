@@ -7,7 +7,7 @@
 <h2>Checkout</h2>
 
 <div class="col-md-6">
-    @using (Html.BeginForm("Checkout", "Home", FormMethod.Post))
+    @using (Html.BeginForm("Checkout", "Home", FormMethod.Post,new {@id="MyForm"}))
     {
         <input type="hidden" name="Product.Id" value="@Model.Product.Id" />
         <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
@@ -17,7 +17,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CardName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CardName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.CardName, new { htmlAttributes = new { @class = "form-control", @placeholder="Johny Deep" } })
                     @Html.ValidationMessageFor(model => model.CardName, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -25,7 +25,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CardNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CardNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.CardNumber, new { htmlAttributes = new { @class = "form-control"} })
                     @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -82,6 +82,34 @@
 </div>
 
 
+<script>
+    $("#CardName").keyup(function () {
 
+        if (this.value.match(/[^a-zA-Z]/g)) {
+
+            this.value = this.value.replace(/[^a-zA-Z]/g, '');
+        }
+    });
+
+    var cardNumberLength = $("#CardNumber").val().length;
+    $("#CardNumber").on("keyup", function () {
+        cardNumberLength = $("#CardNumber").val().length
+        if (cardNumberLength > 16) {
+            $("#CardNumber").val($("#CardNumber").val().substring(0, $("#CardNumber").val().length - 1));
+        }
+    });
+   
+    let cvvLength = $("#CVV").length;
+    let monthLength = $("#Month").length;
+    let yearLength = $("#Year").length;
+    let result = true;
+
+    //$("#MyForm").submit(function (e) {
+    //    e.preventDefault();
+    //    if (cardNumberLength < 16) {
+    //        result = false;
+    //    }
+    //});
+</script>
 
 

@@ -60,7 +60,6 @@ namespace BBGymManagement.Controllers
         public ActionResult Index(Customer model)
         {
 
-            
             if (!IsValidatiıon(model))
             {
                 TempData["error"] += "Please fill the empty places. ";
