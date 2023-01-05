@@ -38,7 +38,7 @@ namespace BBGymManagement.Controllers
 
         public ActionResult BodyFatCalculator()
         {
-            ViewBag.BodyFat = 0;
+            ViewBag.BodyFat = 9999;
             return View();
         }
 
@@ -55,7 +55,7 @@ namespace BBGymManagement.Controllers
                 var result = 495 / (1.29579 - 0.35004 * Math.Log10(model.WaistCircumference + model.HipCircumference - model.NeckCircumference) + 0.22100 * Math.Log10(model.Height)) - 450;
                 ViewBag.BodyFat = Math.Round(result, 1);
             }
-            return View();
+            return View(model);
         }
 
         [HttpGet]
@@ -125,5 +125,16 @@ namespace BBGymManagement.Controllers
             }
             return View(model);
         }
+
+
+        public ActionResult MyAccount()
+        {
+            var formsIdentity = (FormsIdentity)HttpContext.User.Identity;
+            var ticket = FormsAuthentication.Decrypt(formsIdentity.Ticket.Name);
+            var customer = _customerService.Get(x => x.Email == ticket.Name).FirstOrDefault();
+            var model = new CustomerDetailModel { Name = customer.Name, Surname = customer.Surname, Email = customer.Email };
+            return View(model);
+        }
+
     }
 }

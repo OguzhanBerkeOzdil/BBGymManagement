@@ -7,7 +7,7 @@
 <h2>Checkout</h2>
 
 <div class="col-md-6">
-    @using (Html.BeginForm("Checkout", "Home", FormMethod.Post,new {@id="MyForm"}))
+    @using (Html.BeginForm("Checkout", "Home", FormMethod.Post, new { @id = "MyForm" }))
     {
         <input type="hidden" name="Product.Id" value="@Model.Product.Id" />
         <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
@@ -17,7 +17,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CardName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CardName, new { htmlAttributes = new { @class = "form-control", @placeholder="Johny Deep" } })
+                    @Html.EditorFor(model => model.CardName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Johny Deep" } })
                     @Html.ValidationMessageFor(model => model.CardName, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -25,7 +25,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CardNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CardNumber, new { htmlAttributes = new { @class = "form-control"} })
+                    @Html.EditorFor(model => model.CardNumber, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -56,7 +56,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Complete" class="btn btn-default" />
+                    <input id="btnSubmit" type="submit" value="Complete" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -98,18 +98,71 @@
             $("#CardNumber").val($("#CardNumber").val().substring(0, $("#CardNumber").val().length - 1));
         }
     });
-   
-    let cvvLength = $("#CVV").length;
-    let monthLength = $("#Month").length;
-    let yearLength = $("#Year").length;
-    let result = true;
 
-    //$("#MyForm").submit(function (e) {
-    //    e.preventDefault();
-    //    if (cardNumberLength < 16) {
-    //        result = false;
-    //    }
-    //});
+    var cvvLength = $("#CVV").val().length;
+    $("#CVV").on("keyup", function () {
+        cvvLength = $("#CVV").val().length
+        if (cvvLength > 3) {
+            $("#CVV").val($("#CVV").val().substring(0, $("#CVV").val().length - 1));
+        }
+    });
+
+    var monthLength = $("#Month").val().length;
+    $("#Month").on("keyup", function () {
+        monthLength = $("#Month").val().length
+        if (monthLength > 2) {
+            $("#Month").val($("#Month").val().substring(0, $("#Month").val().length - 1));
+        }
+    });
+
+    var yearLength = $("#Year").val().length;
+    $("#Year").on("keyup", function () {
+        yearLength = $("#Year").val().length
+        if (yearLength > 2) {
+            $("#Year").val($("#Year").val().substring(0, $("#Year").val().length - 1));
+        }
+    });
+
+    var result = true;
+
+    $("#btnSubmit").click(function (event) {
+
+        event.preventDefault();
+
+        var cardName = $("#CardName").val();
+        var cardNumber = $("#CardNumber").val();
+        var cvv = $("#CVV").val();
+        var month = $("#Month").val();
+        var year = $("#Year").val();
+
+        if ($.trim(cardName) == "") {
+            $("#CardName").focus();
+            result = false;
+        }
+        else if (cardNumber.length < 16 || cardNumber == null) {
+            $("#CardNumber").focus();
+            result = false;
+        }
+        else if (cvv.length < 3 || cvv == null) {
+            $("#CVV").focus();
+            result = false;
+        }
+        else if (month.length < 1 || month == null || month < 1 || month > 13) {
+            $("#Month").focus();
+            result = false;
+        }
+        else if (year.length < 2 || year == null || year < 23) {
+            $("#Year").focus();
+            result = false;
+        }
+        else {
+            result = true;
+        }
+        
+        if (result == true) {
+            $("#MyForm").submit();
+        }
+    });
 </script>
 
 

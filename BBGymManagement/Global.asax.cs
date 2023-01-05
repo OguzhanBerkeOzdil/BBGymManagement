@@ -14,6 +14,13 @@ namespace BBGymManagement
         protected void Application_Start()
         {
             EFDbContext context= new EFDbContext();
+            if (!context.Rols.Any())
+            {
+                context.Rols.Add(new Models.Entities.Rol { Name = "Admin" });
+                context.Rols.Add(new Models.Entities.Rol { Name = "Customer" });
+                context.Rols.Add(new Models.Entities.Rol { Name = "PersonalTrainer" });
+                context.SaveChanges();
+            }
             if (!context.Customers.Any(x => x.RolId == context.Rols.FirstOrDefault(f => f.Name == "Admin").Id))
             {
                 context.Customers.Add(new Models.Entities.Customer {Name= "Administrator",Surname= "Administrator",Email="admin@bbgym.com",Password="123321",VerPassword="123321",RolId=1,SecurityQuestion="Kaç cm ?",SecurityAnswer="5cm" });

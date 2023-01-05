@@ -156,6 +156,7 @@
     <Compile Include="Models\Entities\Rol.cs" />
     <Compile Include="MVVM\BodyFatCalculatorModel.cs" />
     <Compile Include="MVVM\CheckoutModel.cs" />
+    <Compile Include="MVVM\CustomerDetailModel.cs" />
     <Compile Include="MVVM\CustomerOrdersModel.cs" />
     <Compile Include="MVVM\ProductDetailModel.cs" />
     <Compile Include="MVVM\ProductViewModel.cs" />
@@ -236,6 +237,7 @@
     <Content Include="Views\Home\Checkout.cshtml" />
     <Content Include="Views\Home\CheckoutCompleted.cshtml" />
     <Content Include="Views\Home\MyOrders.cshtml" />
+    <Content Include="Views\Home\MyAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

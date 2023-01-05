@@ -7,7 +7,7 @@
 
 <h2>Body Fat Calculator</h2>
 
-@using (Html.BeginForm("BodyFatCalculator", "Home", FormMethod.Post))
+@using (Html.BeginForm("BodyFatCalculator", "Home", FormMethod.Post,new {@id="MyForm"}))
 {
     <div class="form-horizontal">
         <hr />
@@ -54,12 +54,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Calculate" class="btn btn-default" />
+                <input id="btnSubmit" type="submit" value="Calculate" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-<div class="bg-success text-center" style="padding:20px" id="result"> 
+<div class="bg-success text-center" style="padding:20px" id="result">
     <label style="font-weight:bold; font-size:20px">Body fat: @ViewBag.BodyFat %</label>
     <div>
         <p>
@@ -74,11 +74,53 @@
     </div>
 </div>
 <script>
+
+    $("#btnSubmit").click(function (event) {
+        event.preventDefault();
+        var result = true;
+        if ($("#Age").val() <= 0) {
+            $("#Age").focus();
+            result = false;
+        }
+        else if ($("#Height").val() <= 0) {
+            $("#Height").focus();
+            result = false;
+        }
+        else if ($("#Sex").val() == 0) {
+            $("#Sex").focus();
+            result = false;
+        }
+        else if ($("#NeckCircumference").val() <= 0) {
+            $("#NeckCircumference").focus();
+            result = false;
+        }
+        else if ($("#WaistCircumference").val() <= 0) {
+            $("#WaistCircumference").focus();
+            result = false;
+        }
+        else if ($("#Sex").val() == 20 && $("#HipCircumference").val() <= 0) {
+            $("#HipCircumference").focus();
+            result = false;
+        }
+        else {
+            result = true;
+        }
+
+        if (result==true) {
+            $("#MyForm").submit();
+        }
+
+    });
+
     $("#HipCircumference").hide();
     $("#LabelHipCircumference").hide();
     $("#result").hide();
-    if (@ViewBag.BodyFat > 0) {
+    if (@ViewBag.BodyFat !=9999) {
         $("#result").show();
+    }
+    if ($("#Sex").val()==20) {
+        $("#LabelHipCircumference").show();
+        $("#HipCircumference").show();
     }
     $("#Sex").on('change', function () {
         if (this.value == 20) {
@@ -90,4 +132,7 @@
             $("#LabelHipCircumference").hide();
         }
     });
+
+
+
 </script>
