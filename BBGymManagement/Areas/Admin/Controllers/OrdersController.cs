@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -10,6 +13,7 @@ using BBGymManagement.Areas.Admin.MVVM;
 using BBGymManagement.Models.Context;
 using BBGymManagement.Models.Entities;
 using BBGymManagement.Services;
+using QRCoder;
 
 namespace BBGymManagement.Areas.Admin.Controllers
 {
@@ -28,7 +32,7 @@ namespace BBGymManagement.Areas.Admin.Controllers
             {
                 var customer = _customerService.GetById(item.UserId);
                 var product = _productService.GetById(item.ProductId);
-                orders.Add(new OrderViewModel { Id = item.Id, CustomerName = customer.Name + " " + customer.Surname, FinishTime = item.FinishTime, TotalPrice = item.TotalPrice, ProductName = product.Name });
+                orders.Add(new OrderViewModel { Id = item.Id, CustomerName = customer.Name + " " + customer.Surname, FinishTime = item.FinishTime, TotalPrice = item.TotalPrice, ProductName = product.Name, IsActive = item.IsActive });
             }
             return View(orders);
         }
@@ -45,7 +49,35 @@ namespace BBGymManagement.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            return View(order);
+            OrderDetailViewModel model = new OrderDetailViewModel
+            {
+                UserId = order.UserId,
+                TotalPrice = order.TotalPrice,
+                ProductId = order.ProductId,
+                FinishTime = order.FinishTime,
+                Id = order.Id,
+                IsActive = order.IsActive
+            };
+
+            var product = _productService.GetById(order.ProductId);
+
+            if (Enum.GetName(typeof(CategoryId), product.CategoryId) == "GymMembership")
+            {
+                QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode(order.QR.ToString(), QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qRCodeData);
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (Bitmap bitmap = qrCode.GetGraphic(20))
+                    {
+                        bitmap.Save(ms, ImageFormat.Png);
+                        model.QRImageLink = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+
+                    }
+                }
+            }
+            return View(model);
         }
 
         // GET: Admin/Orders/Edit/5

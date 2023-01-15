@@ -16,6 +16,7 @@
             <th scope="col">Category</th>
             <th scope="col">Total Price</th>
             <th scope="col">Finish Time</th>
+            <th scope="col">QR</th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
                 <td>@Enum.GetName(typeof(BBGymManagement.Models.Entities.CategoryId), item.Product.CategoryId)</td>
                 <td>@item.TotalPrice $</td>
                 <td>@item.FinishTime</td>
+                <td><img style="height:150px" src="@item.QRImageLink" /></td>
             </tr>
             sayac++;
         }

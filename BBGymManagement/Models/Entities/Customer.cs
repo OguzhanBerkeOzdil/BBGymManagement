@@ -15,5 +15,6 @@ namespace BBGymManagement.Models.Entities
         public string SecurityQuestion { get; set; }
         public string SecurityAnswer { get; set; }
         public int RolId { get; set; }
+        
     }
 }

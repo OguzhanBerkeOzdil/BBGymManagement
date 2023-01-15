@@ -1,4 +1,5 @@
-﻿using BBGymManagement.Models.Context;
+﻿using BBGymManagement.Helpers;
+using BBGymManagement.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace BBGymManagement
     {
         protected void Application_Start()
         {
-            EFDbContext context= new EFDbContext();
+            EFDbContext context = new EFDbContext();
             if (!context.Rols.Any())
             {
                 context.Rols.Add(new Models.Entities.Rol { Name = "Admin" });
@@ -23,10 +24,14 @@ namespace BBGymManagement
             }
             if (!context.Customers.Any(x => x.RolId == context.Rols.FirstOrDefault(f => f.Name == "Admin").Id))
             {
-                context.Customers.Add(new Models.Entities.Customer {Name= "Administrator",Surname= "Administrator",Email="admin@bbgym.com",Password="123321",VerPassword="123321",RolId=1,SecurityQuestion="Kaç cm ?",SecurityAnswer="5cm" });
+                var md5password = MD5EncryptionCustom.MD5Encryption("123321");
+                context.Customers.Add(new Models.Entities.Customer { Name = "Administrator", Surname = "Administrator", Email = "admin@bbgym.com", Password = md5password, VerPassword = md5password, RolId = 1, SecurityQuestion = "Kaç cm ?", SecurityAnswer = "5cm" });
                 context.SaveChanges();
             }
-            
+
+            Trigger trigger = new Trigger();
+            trigger.QuestTrigger();
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

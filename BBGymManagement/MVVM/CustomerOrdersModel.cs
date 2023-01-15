@@ -10,5 +10,6 @@ namespace BBGymManagement.MVVM
         public ProductDetailModel Product { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime FinishTime { get; set; }
+        public string QRImageLink { get; set; }
     }
 }

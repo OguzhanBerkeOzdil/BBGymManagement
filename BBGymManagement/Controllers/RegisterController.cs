@@ -5,13 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Security.Cryptography;
+using System.Text;
+using BBGymManagement.Helpers;
 namespace BBGymManagement.Controllers
 {
     public class RegisterController : Controller
     {
         CustomerService _customerService = new CustomerService();
         RolService _rolService = new RolService();
+
 
 
         public bool IsValidatiıon(Customer model)
@@ -48,7 +51,7 @@ namespace BBGymManagement.Controllers
             }
 
             return validation;
- 
+
         }
         // GET: Register
         public ActionResult Index()
@@ -78,9 +81,11 @@ namespace BBGymManagement.Controllers
 
             model.RolId = _rolService.Get(x => x.Name == "Customer").First().Id;
 
+            model.Password = MD5EncryptionCustom.MD5Encryption(model.Password);
+            model.VerPassword = MD5EncryptionCustom.MD5Encryption(model.Password);
             _customerService.Add(model);
 
-            return RedirectToAction("Index","Login");
+            return RedirectToAction("Index", "Login");
         }
     }
 }

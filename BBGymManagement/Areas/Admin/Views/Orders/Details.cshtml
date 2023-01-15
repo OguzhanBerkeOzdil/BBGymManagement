@@ -1,4 +1,4 @@
-﻿@model BBGymManagement.Models.Entities.Order
+﻿@model BBGymManagement.Areas.Admin.MVVM.OrderDetailViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -41,6 +41,13 @@
 
         <dd>
             @Html.DisplayFor(model => model.FinishTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QRImageLink)
+        </dt>
+
+        <dd>
+            <img src="@Model.QRImageLink" style="width:100px;" />
         </dd>
 
     </dl>

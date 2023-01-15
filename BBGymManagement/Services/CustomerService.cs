@@ -1,4 +1,5 @@
-﻿using BBGymManagement.Models.Entities;
+﻿using BBGymManagement.Helpers;
+using BBGymManagement.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,16 @@ namespace BBGymManagement.Services
 
         public bool IsCustomer(string email, string password)
         {
-            var a = Get(x => x.Email == email && x.Password == password).Any();
-            return a;
+            var md5password = MD5EncryptionCustom.MD5Encryption(password);
+            return Get(x => x.Email == email && x.Password == md5password).Any();
         }
 
         public bool IsAdmin(string email, string password)
         {
             var rolId = _rolService.Get(f => f.Name == "Admin").FirstOrDefault().Id;
-            return Get(x => x.Email == email && x.Password == password && x.RolId == rolId).Any();
+            var md5password= MD5EncryptionCustom.MD5Encryption(password);
+            return Get(x => x.Email == email && x.Password == md5password && x.RolId == rolId).Any();
         }
+
     }
 }

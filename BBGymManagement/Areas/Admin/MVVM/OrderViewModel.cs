@@ -12,5 +12,6 @@ namespace BBGymManagement.Areas.Admin.MVVM
         public string CustomerName { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime FinishTime { get; set; }
+        public bool IsActive { get; set; }
     }
 }
