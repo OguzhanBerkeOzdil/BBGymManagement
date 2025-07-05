@@ -238,8 +238,7 @@ This project was developed for educational purposes. Created as part of AGH Univ
 ### Oğuzhan Berke Özdil
 
 - 🎓 AGH University - Computer Science
-- 📧 [Contact information]
-- 💼 [LinkedIn profile]
+- 💼 https://www.linkedin.com/in/oguzhanberkeozdil/
 
 ---
 
