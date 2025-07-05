@@ -1,0 +1,142 @@
+@model BBGymManagement.Models.Entities.Order
+
+@{
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = currentLang == "tr" ? "Yeni Sipariş Oluştur" : "Create New Order";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="admin-page-container" style="padding: 30px;">
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+        <h2 style="color: #2c3e50; font-weight: 700; margin-bottom: 5px;">
+            <i class="fas fa-plus-circle me-3"></i>@(currentLang == "tr" ? "Yeni Sipariş Oluştur" : "Create New Order")
+        </h2>
+        <p class="text-muted">@(currentLang == "tr" ? "Müşteri için yeni bir sipariş oluşturun" : "Create a new order for a customer")</p>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Form Container -->
+    <div class="card border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-body p-5">
+            @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <div class="row g-4">
+                    <!-- Customer Selection -->
+                    <div class="col-md-6">
+                        <label for="UserId" class="form-label fw-bold">
+                            <i class="fas fa-user me-2"></i>@(currentLang == "tr" ? "Müşteri Seç" : "Select Customer")
+                        </label>
+                        @Html.DropDownListFor(model => model.UserId, (IEnumerable<SelectListItem>)ViewBag.Customers, 
+                            (currentLang == "tr" ? "Müşteri seçin..." : "Select customer..."), 
+                            new { @class = "form-select form-control", @id = "customerSelect" })
+                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Product Selection -->
+                    <div class="col-md-6">
+                        <label for="ProductId" class="form-label fw-bold">
+                            <i class="fas fa-box me-2"></i>@(currentLang == "tr" ? "Ürün Seç" : "Select Product")
+                        </label>
+                        @Html.DropDownListFor(model => model.ProductId, (IEnumerable<SelectListItem>)ViewBag.Products, 
+                            (currentLang == "tr" ? "Ürün seçin..." : "Select product..."), 
+                            new { @class = "form-select form-control", @id = "productSelect" })
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Order Info Card -->
+                    <div class="col-12">
+                        <div class="card bg-light border-0" style="border-radius: 15px;">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>@(currentLang == "tr" ? "Sipariş Bilgileri" : "Order Information")
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p class="mb-2"><strong>@(currentLang == "tr" ? "Fiyat:" : "Price:")</strong></p>
+                                        <span id="productPrice" class="text-success fw-bold">@(currentLang == "tr" ? "Ürün seçilmedi" : "No product selected")</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="mb-2"><strong>@(currentLang == "tr" ? "Süre:" : "Duration:")</strong></p>
+                                        <span id="productDuration" class="text-info fw-bold">@(currentLang == "tr" ? "Ürün seçilmedi" : "No product selected")</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="mb-2"><strong>@(currentLang == "tr" ? "Bitiş Tarihi:" : "End Date:")</strong></p>
+                                        <span id="endDate" class="text-warning fw-bold">@(currentLang == "tr" ? "Hesaplanacak" : "Will be calculated")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="col-12">
+                        <div class="d-flex gap-3 justify-content-end">
+                            @Html.ActionLink((currentLang == "tr" ? "Listeye Dön" : "Back to List"), "Index", null, 
+                                new { @class = "btn btn-outline-secondary px-4", @style = "border-radius: 15px;" })
+                            <input type="submit" value="@(currentLang == "tr" ? "Sipariş Oluştur" : "Create Order")" 
+                                class="btn btn-primary px-4" 
+                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px; font-weight: 600;" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    // Product seçimi değiştiğinde bilgileri güncelle
+    document.getElementById('productSelect').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var productText = selectedOption.text;
+        
+        if (productText && productText !== '@(currentLang == "tr" ? "Ürün seçin..." : "Select product...")') {
+            // Fiyatı çıkar (örn: "Product Name - ₺150,00" formatından)
+            var priceMatch = productText.match(/₺[\d,]+\.?\d*/);
+            if (priceMatch) {
+                document.getElementById('productPrice').textContent = priceMatch[0];
+            }
+            
+            // Ajax ile ürün detaylarını al (isteğe bağlı)
+            // Bu kısım ürün süresini ve bitiş tarihini almak için kullanılabilir
+            var currentLang = '@currentLang';
+            document.getElementById('productDuration').textContent = currentLang === 'tr' ? 'Yükleniyor...' : 'Loading...';
+            document.getElementById('endDate').textContent = currentLang === 'tr' ? 'Hesaplanıyor...' : 'Calculating...';
+        } else {
+            document.getElementById('productPrice').textContent = '@(currentLang == "tr" ? "Ürün seçilmedi" : "No product selected")';
+            document.getElementById('productDuration').textContent = '@(currentLang == "tr" ? "Ürün seçilmedi" : "No product selected")';
+            document.getElementById('endDate').textContent = '@(currentLang == "tr" ? "Hesaplanacak" : "Will be calculated")';
+        }
+    });
+</script>
+
+<style>
+    .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+</style>

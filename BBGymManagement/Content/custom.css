@@ -1,5 +1,229 @@
-﻿body {
+﻿/* === MODERN RENK PALETİ === */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db; 
+    --success-color: #27ae60;
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --info-color: #34495e;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --gradient-primary: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    --gradient-success: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    --gradient-warning: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    --box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1);
+    --border-radius: 15px;
+    --font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Arial Unicode MS', 'Lucida Sans Unicode', Arial, sans-serif;
+}
+
+/* === TEMEL STILLER === */
+body {
     overflow-x: hidden;
+    font-family: var(--font-family) !important;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    color: var(--dark-color) !important;
+    -webkit-font-feature-settings: "liga", "kern", "calt";
+    font-feature-settings: "liga", "kern", "calt";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* === NAVBAR MODERN STILLER === */
+.navbar {
+    background: var(--gradient-primary) !important;
+    box-shadow: var(--box-shadow) !important;
+    border: none !important;
+    padding: 15px 0 !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold !important;
+    font-size: 1.5em !important;
+}
+
+.navbar-nav > li > a {
+    color: white !important;
+    font-weight: 500 !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    margin: 0 5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+}
+
+/* === NAVBAR RESPONSIVE STILLER === */
+@media (max-width: 1200px) {
+    .navbar-nav > li > a {
+        padding: 8px 10px !important;
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-nav > li > a {
+        padding: 6px 8px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-nav > li > a {
+        padding: 8px 15px !important;
+        font-size: 14px !important;
+        margin: 2px 0 !important;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3em !important;
+    }
+}
+
+/* === DROPDOWN MENÜ STİLLERİ === */
+.dropdown-menu {
+    background: white !important;
+    border: none !important;
+    box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2) !important;
+    border-radius: 8px !important;
+}
+
+.dropdown-menu > li > a {
+    color: #2c3e50 !important;
+    padding: 8px 15px !important;
+    transition: all 0.3s ease !important;
+}
+
+.dropdown-menu > li > a:hover {
+    background: #f8f9fa !important;
+    color: #3498db !important;
+}
+
+.dropdown-toggle .caret {
+    margin-left: 5px;
+}
+
+/* === BUTON STILLER === */
+.btn {
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    padding: 12px 25px !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.btn-primary {
+    background: var(--gradient-primary) !important;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3) !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4) !important;
+}
+
+.btn-success {
+    background: var(--gradient-success) !important;
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3) !important;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4) !important;
+}
+
+.btn-warning {
+    background: var(--gradient-warning) !important;
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3) !important;
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4) !important;
+}
+
+/* === KART VE PANEL STILLER === */
+.card, .panel {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    border: none !important;
+    margin-bottom: 30px !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+}
+
+.card:hover, .panel:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 40px rgba(44, 62, 80, 0.15) !important;
+}
+
+.card-header, .panel-heading {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    padding: 20px !important;
+    border: none !important;
+}
+
+.card-body, .panel-body {
+    padding: 30px !important;
+}
+
+/* === FORM STILLER === */
+.form-control {
+    border-radius: 8px !important;
+    border: 2px solid #e9ecef !important;
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25) !important;
+    outline: none !important;
+}
+
+.form-group label {
+    font-weight: 600 !important;
+    color: var(--dark-color) !important;
+    margin-bottom: 8px !important;
+}
+
+/* === ALERT STILLER === */
+.alert {
+    border-radius: 10px !important;
+    border: none !important;
+    padding: 15px 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.alert-success {
+    background: var(--gradient-success) !important;
+    color: white !important;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+    color: white !important;
+}
+
+.alert-warning {
+    background: var(--gradient-warning) !important;
+    color: white !important;
+}
+
+.alert-info {
+    background: var(--gradient-primary) !important;
+    color: white !important;
 }
 
 input::-webkit-outer-spin-button,
@@ -11,6 +235,7 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .preview {
@@ -147,15 +372,169 @@ input[type=number] {
         margin-left: 20px;
     }
 
+/* === ÖZELLEŞTİRİLMİŞ KARTLAR === */
+.modern-card {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    border: none !important;
+    margin-bottom: 30px !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+}
+
+.modern-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 40px rgba(44, 62, 80, 0.15) !important;
+}
+
+.custom-card {
+    margin-top: 30px !important;
+    background: white !important;
+    padding: 40px !important;
+    line-height: 1.6em !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    border: none !important;
+}
+
+/* === ÜRÜN KART STİLLERİ === */
+.product-card {
+    background: white !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--box-shadow) !important;
+    border: none !important;
+    margin-bottom: 30px !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) !important;
+    box-shadow: 0 20px 50px rgba(44, 62, 80, 0.2) !important;
+}
+
 .add-to-cart, .like {
-    background: #ff9f1a;
-    padding: 1.2em 1.5em;
-    border: none;
-    text-transform: UPPERCASE;
-    font-weight: bold;
-    color: #fff;
-    -webkit-transition: background .3s ease;
-    transition: background .3s ease;
+    background: var(--gradient-warning) !important;
+    padding: 15px 25px !important;
+    border: none !important;
+    text-transform: uppercase !important;
+    font-weight: bold !important;
+    color: white !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+.add-to-cart:hover, .like:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4) !important;
+}
+
+/* === RESPONSİF TASARIM === */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 15px !important;
+    }
+    
+    .modern-card, .product-card {
+        margin-bottom: 20px !important;
+    }
+    
+    .btn {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* === ANİMASYONLAR === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out !important;
+}
+
+/* === DİL SEÇİCİ === */
+.language-selector {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px !important;
+    padding: 8px 15px !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+.language-selector:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-1px) !important;
+}
+
+.language-selector option {
+    background: var(--dark-color) !important;
+    color: white !important;
+}
+
+/* === GÜVENLİK VE XSS KORUMASI === */
+.safe-html {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* === RESPONSIVE GRID === */
+.responsive-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 30px !important;
+    margin: 30px 0 !important;
+}
+
+/* === FOOTER === */
+.footer {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    padding: 30px 0 !important;
+    margin-top: 50px !important;
+    border-top: none !important;
+}
+
+/* Footer link renkleri - koyu siyah */
+footer a,
+.footer a {
+    color: #2c3e50 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+footer a:hover,
+.footer a:hover {
+    color: #1a252f !important;
+    text-decoration: none !important;
+    transform: translateY(-1px) !important;
+}
+
+/* === SPINNER LOADING === */
+.loading-spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50% !important;
+    border-top: 3px solid white !important;
+    width: 20px !important;
+    height: 20px !important;
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
     .add-to-cart:hover, .like:hover {
@@ -215,5 +594,113 @@ input[type=number] {
         opacity: 1;
         -webkit-transform: scale(1);
         transform: scale(1);
+    }
+}
+
+/* Bootstrap 4.6.2 güvenlik düzeltmeleri */
+/* XSS koruması için tooltip ve popover içeriklerini escape et */
+.tooltip-inner, .popover-body {
+    white-space: pre-line !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Script tag'larını CSS ile gizle (ek güvenlik) */
+script:not([type]), script[type*="javascript"] {
+    display: none !important;
+}
+
+/* Türkçe karakter desteği iyileştirmeleri */
+body, input, textarea, select, button {
+    font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Arial Unicode MS', 'Lucida Sans Unicode', Arial, sans-serif !important;
+    -webkit-font-feature-settings: "liga", "kern", "calt";
+    font-feature-settings: "liga", "kern", "calt";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* İnput alanlarında Türkçe karakter iyileştirmesi */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    ime-mode: auto;
+    -webkit-ime-mode: auto;
+}
+
+/* Form validasyon mesajları için Türkçe uyumlu stil */
+.field-validation-error {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.input-validation-error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Modern button tasarımları */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: none;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Card tasarımları */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+}
+
+/* Navbar iyileştirmeleri */
+.navbar {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+}
+
+/* Footer tasarımı */
+.footer {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+/* Responsive iyileştirmeler */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Print media query */
+@media print {
+    .navbar, .footer, .btn {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
     }
 }

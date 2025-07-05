@@ -10,12 +10,14 @@ namespace BBGymManagement.Areas.Admin.Controllers
     [AdminAuthorize]
     public class HomeController : Controller
     {
-        // GET: Admin/Home
+        // GET: Admin/Home - Dashboard sayfası
         public ActionResult Index()
         {
+            // Dashboard için gerekli istatistikleri buraya ekleyebiliriz
             return View();
         }
 
+        // Admin çıkış işlemi
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();

@@ -12,14 +12,26 @@ namespace BBGymManagement.Services
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected EFDbContext context = new EFDbContext();
+        protected EFDbContext context;
+
+        public Repository()
+        {
+            context = new EFDbContext();
+        }
+
+        public Repository(EFDbContext dbContext)
+        {
+            context = dbContext;
+        }
+        
         public DbSet<T> Table()
         {
-            return Table<T>();
-        }
-        public DbSet<T> Table<T>() where T : class
-        {
             return context.Set<T>();
+        }
+        
+        public DbSet<TEntity> Table<TEntity>() where TEntity : class
+        {
+            return context.Set<TEntity>();
         }
         public void Add(T model)
         {
@@ -46,9 +58,9 @@ namespace BBGymManagement.Services
         {
             return GetSingle<A>(t => typeof(A).GetProperty("Id").GetValue(t).ToString() == id.ToString());
         }
-        public T GetSingle<T>(Func<T, bool> metot) where T : class
+        public TEntity GetSingle<TEntity>(Func<TEntity, bool> metot) where TEntity : class
         {
-            return Table<T>().FirstOrDefault(metot);
+            return Table<TEntity>().FirstOrDefault(metot);
         }
     
         public void Remove(int id)

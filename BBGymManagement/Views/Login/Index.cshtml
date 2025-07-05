@@ -1,45 +1,167 @@
-﻿
 @{
-    ViewBag.Title = "Index";
+    var currentLang = Session["Language"] as string ?? "en";
+    ViewBag.Title = (currentLang == "tr" ? "Giriş Yap" : "Sign In") + " - BB Gym";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- Hero Section - Login Banner -->
+<div class="gym-hero" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 40px 0; text-align: center; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1);">
+    <h1 class="display-4">
+        <i class="fas fa-dumbbell fa-lg" style="margin-right: 15px;"></i>
+        @(currentLang == "tr" ? "🔑 Giriş Yap" : "🔑 Sign In")
+    </h1>
+    <p class="lead">@(currentLang == "tr" ? "BB Gym hesabınıza giriş yapın ve antrenmanınızı planlayın" : "Sign in to your BB Gym account and plan your workout")</p>
+</div>
 
+<!-- Login Form Section -->
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="modern-card" style="padding: 40px; border-radius: 20px; box-shadow: 0 15px 40px rgba(44, 62, 80, 0.1); background: white; margin-bottom: 50px;">
+            
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible" style="border-radius: 15px; border: none; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: white;">&times;</button>
+                    <i class="fas fa-check-circle" style="margin-right: 10px;"></i>@TempData["success"]
+                </div>
+            }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+            @if (TempData["LoginError"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible" style="border-radius: 15px; border: none; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: white;">&times;</button>
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>@TempData["LoginError"]
+                </div>
+            }
 
-    <div class="form-horizontal">
-        <h2>Login Page</h2>
-        <h3 style="color:red;">@TempData["LoginError"]</h3>
-        <hr />
-        <div class="form-group">
-            <label class="control-label col-md-2">Email</label>
-            <div class="col-md-10">
-                <input type="email" name="email" class="form-control"/>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible" style="border-radius: 15px; border: none; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: white;">&times;</button>
+                    <i class="fas fa-check-circle" style="margin-right: 10px;"></i>@TempData["SuccessMessage"]
+                </div>
+            }
+
+            <div class="text-center mb-4">
+                <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white;">
+                    <i class="fas fa-user fa-2x"></i>
+                </div>
+                <h3 style="color: #2c3e50; font-weight: 600; margin-bottom: 10px;">
+                    @(currentLang == "tr" ? "Hesabınıza Giriş Yapın" : "Sign In to Your Account")
+                </h3>
+                <p style="color: #7f8c8d; margin-bottom: 0;">
+                    @(currentLang == "tr" ? "BB Gym'e hoş geldiniz! Lütfen bilgilerinizi girin." : "Welcome to BB Gym! Please enter your credentials.")
+                </p>
             </div>
-        </div>
 
-        <div class="form-group">
+            @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
 
-            <label class="control-label col-md-2">Password</label>
-            <div class="col-md-10">
-                <input type="password" name="password" class="form-control"  />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
+                <div class="form-group mb-4">
+                    <label for="Email" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                        <i class="fas fa-envelope" style="margin-right: 8px; color: #3498db;"></i>
+                        @(currentLang == "tr" ? "E-posta Adresi" : "Email Address")
+                    </label>
+                    @Html.TextBox("Email", "", new { 
+                        @class = "form-control", 
+                        placeholder = currentLang == "tr" ? "ornek@email.com" : "example@email.com",
+                        required = "required",
+                        type = "email",
+                        style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;"
+                    })
+                    <div class="invalid-feedback">
+                        @(currentLang == "tr" ? "Lütfen geçerli bir e-posta adresi girin." : "Please provide a valid email address.")
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="Password" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                        <i class="fas fa-lock" style="margin-right: 8px; color: #3498db;"></i>
+                        @(currentLang == "tr" ? "Şifre" : "Password")
+                    </label>
+                    @Html.Password("Password", "", new { 
+                        @class = "form-control", 
+                        placeholder = currentLang == "tr" ? "Şifrenizi girin" : "Enter your password",
+                        required = "required",
+                        style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;"
+                    })
+                    <div class="invalid-feedback">
+                        @(currentLang == "tr" ? "Lütfen şifrenizi girin." : "Please provide your password.")
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe" style="margin-top: 6px;">
+                        <label class="form-check-label" for="rememberMe" style="color: #7f8c8d; margin-left: 8px;">
+                            @(currentLang == "tr" ? "Beni hatırla" : "Remember me")
+                        </label>
+                    </div>
+                    <a href="#" style="color: #3498db; text-decoration: none; font-weight: 500;">
+                        @(currentLang == "tr" ? "Şifremi unuttum?" : "Forgot password?")
+                    </a>
+                </div>
+
+                <button type="submit" class="btn w-100 mb-4" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 600; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-sign-in-alt" style="margin-right: 10px;"></i>
+                    @(currentLang == "tr" ? "Giriş Yap" : "Sign In")
+                </button>
+            }
+
+            <div class="text-center">
+                <hr style="margin: 30px 0; border-color: #ecf0f1;">
+                <p style="color: #7f8c8d; margin-bottom: 0;">
+                    @(currentLang == "tr" ? "Hesabınız yok mu?" : "Don't have an account?")
+                    @Html.ActionLink(
+                        currentLang == "tr" ? "Kayıt Ol" : "Sign Up", 
+                        "Index", 
+                        "Register", 
+                        null, 
+                        new { 
+                            style = "color: #27ae60; text-decoration: none; font-weight: 600; margin-left: 5px;",
+                            onmouseover = "this.style.color='#229954'",
+                            onmouseout = "this.style.color='#27ae60'"
+                        }
+                    )
+                </p>
             </div>
         </div>
     </div>
-}
-
-<div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+<style>
+.form-control:focus {
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25) !important;
 }
 
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4) !important;
+}
+
+.form-check-input:checked {
+    background-color: #3498db !important;
+    border-color: #3498db !important;
+}
+</style>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>

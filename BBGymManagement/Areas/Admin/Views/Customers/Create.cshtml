@@ -1,92 +1,113 @@
 ﻿@model BBGymManagement.Models.Entities.Customer
 
 @{
-    ViewBag.Title = "Create";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = currentLang == "tr" ? "Yeni Müşteri Ekle" : "Add New Customer";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Customer</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+<div class="admin-page-container" style="padding: 30px;">
+    <!-- Page Header -->
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #2c3e50; font-weight: 700; margin-bottom: 5px;">
+                <i class="fas fa-user-plus me-3"></i>@(currentLang == "tr" ? "Yeni Müşteri Ekle" : "Add New Customer")
+            </h2>
+            <p class="text-muted">@(currentLang == "tr" ? "Sistemde yeni müşteri oluştur" : "Create a new customer in the system")</p>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.VerPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VerPassword, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.VerPassword, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SecurityQuestion, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SecurityQuestion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SecurityQuestion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SecurityAnswer, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SecurityAnswer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SecurityAnswer, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RolId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RolId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RolId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+        <div>
+            <a href="@Url.Action("Index")" class="btn btn-secondary" style="border-radius: 15px; padding: 12px 25px;">
+                <i class="fas fa-arrow-left me-2"></i>@(currentLang == "tr" ? "Geri Dön" : "Back")
+            </a>
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <!-- Create Form -->
+    <div class="card" style="border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px 20px 0 0; padding: 20px;">
+            <h5 class="mb-0"><i class="fas fa-user me-2"></i>@(currentLang == "tr" ? "Müşteri Bilgileri" : "Customer Information")</h5>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            @using (Html.BeginForm("Create", "Customers", FormMethod.Post, new { @class = "modern-form" })) 
+            {
+                @Html.AntiForgeryToken()
+                
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.Name, currentLang == "tr" ? "Ad" : "Name", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = currentLang == "tr" ? "Adınızı giriniz..." : "Enter your name..." } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.Surname, currentLang == "tr" ? "Soyad" : "Surname", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = currentLang == "tr" ? "Soyadınızı giriniz..." : "Enter your surname..." } })
+                            @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.Email, currentLang == "tr" ? "E-posta" : "Email", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "email", @placeholder = currentLang == "tr" ? "E-posta adresinizi giriniz..." : "Enter your email address..." } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.Password, currentLang == "tr" ? "Şifre" : "Password", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "password", @placeholder = currentLang == "tr" ? "Şifrenizi giriniz..." : "Enter password..." } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.VerPassword, currentLang == "tr" ? "Şifre Tekrar" : "Confirm Password", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.VerPassword, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "password", @placeholder = currentLang == "tr" ? "Şifrenizi tekrar giriniz..." : "Confirm password..." } })
+                            @Html.ValidationMessageFor(model => model.VerPassword, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.SecurityQuestion, currentLang == "tr" ? "Güvenlik Sorusu" : "Security Question", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.SecurityQuestion, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = currentLang == "tr" ? "Güvenlik sorusunu giriniz..." : "Enter security question..." } })
+                            @Html.ValidationMessageFor(model => model.SecurityQuestion, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.SecurityAnswer, currentLang == "tr" ? "Güvenlik Cevabı" : "Security Answer", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.SecurityAnswer, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = currentLang == "tr" ? "Güvenlik cevabını giriniz..." : "Enter security answer..." } })
+                            @Html.ValidationMessageFor(model => model.SecurityAnswer, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.RolId, currentLang == "tr" ? "Rol" : "Role", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.RolId, new { htmlAttributes = new { @class = "form-control form-control-lg", @value = "2" } })
+                            @Html.ValidationMessageFor(model => model.RolId, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px; padding: 15px 40px; font-weight: 600;">
+                                <i class="fas fa-save me-2"></i>@(currentLang == "tr" ? "Müşteri Oluştur" : "Create Customer")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

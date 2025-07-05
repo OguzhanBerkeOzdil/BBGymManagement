@@ -1,11 +1,118 @@
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home - BB Gym";
+    var currentLang = Session["Language"] as string ?? "en";
 }
-
 
 @{
     if (TempData["Product"] != null)
     {
-        <h4 style="color:red;">@TempData["Product"]</h4>
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Success!</strong> @TempData["Product"]
+        </div>
     }
 }
+
+<!-- Hero Section - Welcome banner with call to action -->
+<div class="gym-hero">
+    <h1 class="display-3"><strong>💪 @(currentLang == "tr" ? "BB GYM'e Hoş Geldiniz!" : "Welcome to BB GYM!")</strong></h1>
+    <p class="lead">@(currentLang == "tr" ? "Hayalinizdeki vücuda ulaşmak için doğru yerdesiniz. Profesyonel ekibimiz ve modern ekipmanlarımızla size en iyi hizmeti sunuyoruz." : "You're in the right place to achieve your dream body. We offer you the best service with our professional team and modern equipment.")</p>
+    <a class="btn btn-lg" href="@Url.Action("GymMembership", "Category")" role="button" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; border: none; border-radius: 8px; padding: 15px 30px; font-weight: 600; box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3); transition: all 0.3s ease; text-decoration: none;">🏋️ @(currentLang == "tr" ? "Üyelik Alın" : "Get Membership")</a>
+</div>
+
+<!-- Features Section - Gym's main selling points -->
+<div class="row text-center" style="margin: 50px 0;">
+    <div class="col-md-3">
+        <div class="modern-card" style="padding: 30px; text-align: center;">
+            <i class="fas fa-dumbbell fa-3x" style="color: #3498db; margin-bottom: 20px;"></i>
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">@(currentLang == "tr" ? "Modern Ekipmanlar" : "Modern Equipment")</h4>
+            <p style="color: #34495e;">@(currentLang == "tr" ? "Son teknoloji fitness ekipmanları ile antrenman yapın." : "We provide fitness training with the latest technology equipment.")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="modern-card" style="padding: 30px; text-align: center;">
+            <i class="fas fa-user-tie fa-3x" style="color: #27ae60; margin-bottom: 20px;"></i>
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">@(currentLang == "tr" ? "Uzman Antrenörler" : "Expert Trainers")</h4>
+            <p style="color: #34495e;">@(currentLang == "tr" ? "Sertifikalı personal trainerlar ile hedeflerinize ulaşın." : "Reach your goals with certified personal trainers.")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="modern-card" style="padding: 30px; text-align: center;">
+            <i class="fas fa-clock fa-3x" style="color: #f39c12; margin-bottom: 20px;"></i>
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">@(currentLang == "tr" ? "7/24 Erişim" : "24/7 Access")</h4>
+            <p style="color: #34495e;">@(currentLang == "tr" ? "İstediğiniz saatte antrenman yapmak için her zaman açığız." : "Access our gym 24/7 to train whenever you want.")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="modern-card" style="padding: 30px; text-align: center;">
+            <i class="fas fa-chart-line fa-3x" style="color: #e74c3c; margin-bottom: 20px;"></i>
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">@(currentLang == "tr" ? "İlerleme Takibi" : "Progress Tracking")</h4>
+            <p style="color: #34495e;">@(currentLang == "tr" ? "Gelişiminizi takip edin ve motivasyonunuzu artırın." : "Track your progress and stay motivated on your fitness journey.")</p>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Services - Main action buttons -->
+<div class="row" style="margin: 40px 0;">
+    <div class="col-md-12">
+        <h2 class="text-center" style="margin-bottom: 30px; color: #2c3e50;">🚀 @(currentLang == "tr" ? "Hızlı Hizmetler" : "Quick Services")</h2>
+    </div>
+    <div class="col-md-4">
+        <a href="@Url.Action("GymMembership", "Category")" class="btn btn-primary btn-block btn-lg" style="padding: 20px; margin-bottom: 15px; background: linear-gradient(45deg, #3498db, #2980b9); border: none;">
+            <i class="fas fa-id-card fa-2x"></i><br>
+            <strong>@(currentLang == "tr" ? "Spor Salonu Üyeliği" : "Gym Membership")</strong><br>
+            <small>@(currentLang == "tr" ? "Aylık ve yıllık üyelik seçenekleri" : "Monthly and yearly membership options")</small>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="@Url.Action("PersonalTrainer", "Category")" class="btn btn-success btn-block btn-lg" style="padding: 20px; margin-bottom: 15px; background: linear-gradient(45deg, #27ae60, #229954); border: none;">
+            <i class="fas fa-user-cog fa-2x"></i><br>
+            <strong>@(currentLang == "tr" ? "Kişisel Antrenör" : "Personal Trainer")</strong><br>
+            <small>@(currentLang == "tr" ? "Kişisel antrenman programları" : "Personal training programs")</small>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="@Url.Action("BodyFatCalculator", "Home")" class="btn btn-warning btn-block btn-lg" style="padding: 20px; margin-bottom: 15px; background: linear-gradient(45deg, #f39c12, #e67e22); border: none;">
+            <i class="fas fa-calculator fa-2x"></i><br>
+            <strong>@(currentLang == "tr" ? "Vücut Yağ Hesaplayıcısı" : "Body Fat Calculator")</strong><br>
+            <small>@(currentLang == "tr" ? "Ücretsiz hesaplama aracı" : "Free calculation tool")</small>
+        </a>
+    </div>
+</div>
+
+<!-- Testimonials -->
+<div class="row" style="background: #f8f9fa; padding: 40px 20px; border-radius: 15px; margin: 40px 0;">
+    <div class="col-md-12">
+        <h2 class="text-center" style="margin-bottom: 30px; color: #2c3e50;">💬 Üyelerimiz Ne Diyor?</h2>
+    </div>
+    <div class="col-md-4">
+        <div class="text-center">
+            <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <img src="https://via.placeholder.com/80" class="rounded-circle" alt="User">
+                <h5 style="margin: 15px 0 5px 0;">Ahmet Yılmaz</h5>
+                <p style="color: #7f8c8d; font-style: italic;">"Harika bir spor salonu! Ekipmanlar çok kaliteli ve antrenörler gerçekten işini biliyor."</p>
+                <div style="color: #f39c12;">⭐⭐⭐⭐⭐</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="text-center">
+            <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <img src="https://via.placeholder.com/80" class="rounded-circle" alt="User">
+                <h5 style="margin: 15px 0 5px 0;">Ayşe Demir</h5>
+                <p style="color: #7f8c8d; font-style: italic;">"2 ayda 8 kilo verdim! Personal trainer desteği mükemmel. Herkese tavsiye ederim."</p>
+                <div style="color: #f39c12;">⭐⭐⭐⭐⭐</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="text-center">
+            <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <img src="https://via.placeholder.com/80" class="rounded-circle" alt="User">
+                <h5 style="margin: 15px 0 5px 0;">Mehmet Kaya</h5>
+                <p style="color: #7f8c8d; font-style: italic;">"Temizlik ve hijyen konusunda çok titizler. Güvenle antrenman yapabiliyorum."</p>
+                <div style="color: #f39c12;">⭐⭐⭐⭐⭐</div>
+            </div>
+        </div>
+    </div>
+</div>

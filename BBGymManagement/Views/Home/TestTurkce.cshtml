@@ -1,0 +1,68 @@
+@{
+    ViewBag.Title = "Türkçe Karakter Testi";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkçe Karakter Testi</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', 'Arial Unicode MS', 'Lucida Sans Unicode', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            font-feature-settings: "liga" 1, "kern" 1;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1>🇹🇷 Türkçe Karakter Testi</h1>
+        
+        <h2>Büyük Harfler:</h2>
+        <p style="font-size: 24px; font-weight: bold;">
+            A B C Ç D E F G Ğ H I İ J K L M N O Ö P R S Ş T U Ü V Y Z
+        </p>
+        
+        <h2>Küçük Harfler:</h2>
+        <p style="font-size: 24px;">
+            a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z
+        </p>
+        
+        <h2>Örnek Kelimeler:</h2>
+        <ul style="font-size: 18px; line-height: 1.8;">
+            <li><strong>Çiçek</strong> - Çok güzel</li>
+            <li><strong>Ğıdıklama</strong> - Gülümse</li>
+            <li><strong>İstanbul</strong> - İyi</li>
+            <li><strong>Öğrenci</strong> - Özel</li>
+            <li><strong>Şehir</strong> - Şeker</li>
+            <li><strong>Ülke</strong> - Üzüm</li>
+        </ul>
+        
+        <h2>Test Cümlesi:</h2>
+        <p style="font-size: 20px; background: #e3f2fd; padding: 15px; border-radius: 5px;">
+            "Çiğdem öğretmen, İstanbul'da güzel bir şehirde yaşıyor. Ğıdıklanan çocuklar ülkesini çok seviyor."
+        </p>
+        
+        <div style="margin-top: 30px; padding: 15px; background: #f1f8e9; border-radius: 5px;">
+            <h3>Encoding Bilgisi:</h3>
+            <p><strong>Meta Charset:</strong> UTF-8</p>
+            <p><strong>Response Encoding:</strong> UTF-8</p>
+            <p><strong>Font:</strong> Segoe UI, Arial Unicode MS</p>
+        </div>
+    </div>
+</body>
+</html>

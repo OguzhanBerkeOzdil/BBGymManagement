@@ -192,6 +192,8 @@
     <Compile Include="Helpers\MD5EncryptionCustom.cs" />
     <Compile Include="Helpers\Quest.cs" />
     <Compile Include="Helpers\Trigger.cs" />
+    <Compile Include="Helpers\LanguageHelper.cs" />
+    <Compile Include="Helpers\TextResources.cs" />
     <Compile Include="Models\Context\EFDbContext.cs" />
     <Compile Include="Models\Entities\BaseEntity.cs" />
     <Compile Include="Models\Entities\Customer.cs" />

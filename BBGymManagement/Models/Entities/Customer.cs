@@ -5,7 +5,10 @@ using System.Web;
 
 namespace BBGymManagement.Models.Entities
 {
-    public class Customer:BaseEntity
+    /// <summary>
+    /// Müşteri entity sınıfı - veritabanı tablosu için
+    /// </summary>
+    public class Customer : BaseEntity
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -15,6 +18,10 @@ namespace BBGymManagement.Models.Entities
         public string SecurityQuestion { get; set; }
         public string SecurityAnswer { get; set; }
         public int RolId { get; set; }
-        
+        public string Phone { get; set; } // Telefon numarası
+        public DateTime? BirthDate { get; set; } // Doğum tarihi
+        public string Address { get; set; } // Adres bilgisi
+        public string Gender { get; set; } // Cinsiyet
+        public bool IsActive { get; set; } = true; // Aktiflik durumu
     }
 }

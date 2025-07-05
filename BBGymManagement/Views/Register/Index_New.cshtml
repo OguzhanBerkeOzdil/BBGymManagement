@@ -1,0 +1,217 @@
+@model BBGymManagement.Models.Entities.Customer
+
+@{
+    var currentLang = Session["Language"] as string ?? "en";
+    ViewBag.Title = (currentLang == "tr" ? "Kayıt Ol" : "Sign Up") + " - BB Gym";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" style="min-height: 80vh; display: flex; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 0;">
+    <div class="row w-100 justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10">
+            <div class="card border-0 shadow-xl" style="border-radius: 25px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95);">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="bg-success bg-gradient rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-user-plus fa-2x text-white"></i>
+                        </div>
+                        <h2 class="h3 text-dark mb-2">
+                            @(currentLang == "tr" ? "🚀 Kayıt Ol" : "🚀 Sign Up")
+                        </h2>
+                        <p class="text-muted">
+                            @(currentLang == "tr" ? "BB Gym ailesine katılın" : "Join the BB Gym family")
+                        </p>
+                    </div>
+
+                    @if (TempData["error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible border-0" style="border-radius: 15px;">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <i class="fas fa-exclamation-triangle me-2"></i> @TempData["error"]
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Index", "Register", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { 
+                                        @class = "form-control", 
+                                        placeholder = currentLang == "tr" ? "Adınız" : "Your Name",
+                                        required = "required"
+                                    }})
+                                    <label for="Name">
+                                        <i class="fas fa-user me-2"></i>
+                                        @(currentLang == "tr" ? "Ad" : "Name") *
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { 
+                                        @class = "form-control", 
+                                        placeholder = currentLang == "tr" ? "Soyadınız" : "Your Surname",
+                                        required = "required"
+                                    }})
+                                    <label for="Surname">
+                                        <i class="fas fa-user me-2"></i>
+                                        @(currentLang == "tr" ? "Soyad" : "Surname") *
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "E-posta adresiniz" : "Your Email",
+                                required = "required",
+                                type = "email"
+                            }})
+                            <label for="Email">
+                                <i class="fas fa-envelope me-2"></i>
+                                @(currentLang == "tr" ? "E-posta" : "Email") *
+                            </label>
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "Şifreniz" : "Your Password",
+                                required = "required",
+                                type = "password",
+                                minlength = "6"
+                            }})
+                            <label for="Password">
+                                <i class="fas fa-lock me-2"></i>
+                                @(currentLang == "tr" ? "Şifre" : "Password") *
+                            </label>
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger small" })
+                            <div class="form-text">
+                                @(currentLang == "tr" ? "En az 6 karakter olmalıdır." : "Must be at least 6 characters.")
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { 
+                                        @class = "form-control", 
+                                        placeholder = currentLang == "tr" ? "Telefon numaranız" : "Your Phone",
+                                        type = "tel"
+                                    }})
+                                    <label for="Phone">
+                                        <i class="fas fa-phone me-2"></i>
+                                        @(currentLang == "tr" ? "Telefon" : "Phone")
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { 
+                                        @class = "form-control", 
+                                        type = "date"
+                                    }})
+                                    <label for="BirthDate">
+                                        <i class="fas fa-birthday-cake me-2"></i>
+                                        @(currentLang == "tr" ? "Doğum Tarihi" : "Birth Date")
+                                    </label>
+                                    @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            @Html.TextAreaFor(model => model.Address, new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "Adresiniz" : "Your Address",
+                                style = "height: 80px;"
+                            })
+                            <label for="Address">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                @(currentLang == "tr" ? "Adres" : "Address")
+                            </label>
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label small" for="terms">
+                                @(currentLang == "tr" ? "Kullanım şartlarını ve gizlilik politikasını kabul ediyorum." : "I agree to the terms of service and privacy policy.")
+                                <span class="text-danger">*</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-3 mb-3" style="border-radius: 15px; font-weight: 600;">
+                            <i class="fas fa-user-plus me-2"></i>
+                            @(currentLang == "tr" ? "Kayıt Ol" : "Sign Up")
+                        </button>
+                    }
+
+                    <div class="text-center">
+                        <hr class="my-4">
+                        <p class="text-muted mb-0">
+                            @(currentLang == "tr" ? "Zaten hesabınız var mı?" : "Already have an account?")
+                            @Html.ActionLink(
+                                currentLang == "tr" ? "Giriş Yap" : "Sign In", 
+                                "Index", 
+                                "Login", 
+                                null, 
+                                new { @class = "text-decoration-none fw-bold" }
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Password strength indicator
+document.getElementById('Password').addEventListener('input', function() {
+    const password = this.value;
+    const strength = document.querySelector('.password-strength') || document.createElement('div');
+    strength.className = 'password-strength small mt-1';
+    
+    if (password.length < 6) {
+        strength.innerHTML = '<span class="text-danger">@(currentLang == "tr" ? "Zayıf şifre" : "Weak password")</span>';
+        strength.className += ' text-danger';
+    } else if (password.length < 10) {
+        strength.innerHTML = '<span class="text-warning">@(currentLang == "tr" ? "Orta şifre" : "Medium password")</span>';
+        strength.className += ' text-warning';
+    } else {
+        strength.innerHTML = '<span class="text-success">@(currentLang == "tr" ? "Güçlü şifre" : "Strong password")</span>';
+        strength.className += ' text-success';
+    }
+    
+    if (!this.parentNode.querySelector('.password-strength')) {
+        this.parentNode.appendChild(strength);
+    }
+});
+</script>

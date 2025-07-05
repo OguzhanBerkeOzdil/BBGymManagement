@@ -1,0 +1,129 @@
+@{
+    var currentLang = Session["Language"] as string ?? "en";
+    ViewBag.Title = (currentLang == "tr" ? "Giriş Yap" : "Sign In") + " - BB Gym";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" style="min-height: 80vh; display: flex; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="row w-100 justify-content-center">
+        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8">
+            <div class="card border-0 shadow-xl" style="border-radius: 25px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95);">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary bg-gradient rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-dumbbell fa-2x text-white"></i>
+                        </div>
+                        <h2 class="h3 text-dark mb-2">
+                            @(currentLang == "tr" ? "🔑 Giriş Yap" : "🔑 Sign In")
+                        </h2>
+                        <p class="text-muted">
+                            @(currentLang == "tr" ? "BB Gym hesabınıza giriş yapın" : "Sign in to your BB Gym account")
+                        </p>
+                    </div>
+
+                    @if (TempData["LoginError"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible border-0" style="border-radius: 15px;">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <i class="fas fa-exclamation-triangle me-2"></i> @TempData["LoginError"]
+                        </div>
+                    }
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible border-0" style="border-radius: 15px;">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-floating mb-3">
+                            @Html.TextBox("Email", "", new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "E-posta adresiniz" : "Your email",
+                                required = "required",
+                                type = "email"
+                            })
+                            <label for="Email">
+                                <i class="fas fa-envelope me-2"></i>
+                                @(currentLang == "tr" ? "E-posta" : "Email")
+                            </label>
+                            <div class="invalid-feedback">
+                                @(currentLang == "tr" ? "Lütfen geçerli bir e-posta adresi girin." : "Please provide a valid email address.")
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            @Html.Password("Password", "", new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "Şifreniz" : "Your password",
+                                required = "required"
+                            })
+                            <label for="Password">
+                                <i class="fas fa-lock me-2"></i>
+                                @(currentLang == "tr" ? "Şifre" : "Password")
+                            </label>
+                            <div class="invalid-feedback">
+                                @(currentLang == "tr" ? "Lütfen şifrenizi girin." : "Please provide your password.")
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label text-muted small" for="rememberMe">
+                                    @(currentLang == "tr" ? "Beni hatırla" : "Remember me")
+                                </label>
+                            </div>
+                            <a href="#" class="text-decoration-none small">
+                                @(currentLang == "tr" ? "Şifremi unuttum?" : "Forgot password?")
+                            </a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 mb-3" style="border-radius: 15px; font-weight: 600;">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            @(currentLang == "tr" ? "Giriş Yap" : "Sign In")
+                        </button>
+                    }
+
+                    <div class="text-center">
+                        <hr class="my-4">
+                        <p class="text-muted mb-0">
+                            @(currentLang == "tr" ? "Hesabınız yok mu?" : "Don't have an account?")
+                            @Html.ActionLink(
+                                currentLang == "tr" ? "Kayıt Ol" : "Sign Up", 
+                                "Index", 
+                                "Register", 
+                                null, 
+                                new { @class = "text-decoration-none fw-bold" }
+                            )
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>

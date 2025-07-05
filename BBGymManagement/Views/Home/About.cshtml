@@ -1,6 +1,279 @@
 @{
-    ViewBag.Title = "About";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = (currentLang == "tr" ? "Hakkımızda" : "About") + " - BB Gym";
 }
-<h2>@ViewBag.Title</h2>
 
-<p>BBGym Managment Application</p>
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="page-header text-center" style="padding: 60px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px; margin-bottom: 40px; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"gym\" patternUnits=\"userSpaceOnUse\" width=\"100\" height=\"100\"><circle cx=\"50\" cy=\"50\" r=\"2\" fill=\"%23ffffff\" opacity=\"0.1\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23gym)\"/></svg>'); opacity: 0.3;"></div>
+        <div style="position: relative; z-index: 2;">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-dumbbell me-3"></i>
+                @(currentLang == "tr" ? "Hakkımızda" : "About Us")
+            </h1>
+            <p class="lead fs-5">
+                @(currentLang == "tr" ? "BB Gym - Hayallerinizi Gerçeğe Dönüştürün" : "BB Gym - Transform Your Dreams Into Reality")
+            </p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg h-100" style="border-radius: 20px;">
+                <div class="card-body p-5">
+                    <h2 class="h3 mb-4 text-primary">
+                        <i class="fas fa-heart text-danger me-2"></i>
+                        @(currentLang == "tr" ? "Hikayemiz" : "Our Story")
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <p class="fs-6 lh-lg text-muted">
+                            @if(currentLang == "tr") {
+                                <strong>BB Gym</strong>, 2015 yılında genç fitness tutkunları tarafından kurulmuştur. 
+                                Amacımız, herkes için erişilebilir, kaliteli ve motive edici bir fitness deneyimi sunmaktır.
+                            } else {
+                                <strong>BB Gym</strong> was founded in 2015 by a group of young fitness enthusiasts. 
+                                Our goal is to provide an accessible, quality and motivational fitness experience for everyone.
+                            }
+                        </p>
+                        <p class="fs-6 lh-lg text-muted">
+                            @if(currentLang == "tr") {
+                                8 yıllık deneyimimizle, binlerce üyemizin fitness hedeflerine ulaşmasına yardımcı olduk. 
+                                Modern ekipmanlarımız, uzman antrenörlerimiz ve samimi atmosferimizle fark yaratıyoruz.
+                            } else {
+                                With our 8 years of experience, we have helped thousands of our members reach their fitness goals. 
+                                We make a difference with our modern equipment, expert trainers and friendly atmosphere.
+                            }
+                        </p>
+                    </div>
+
+                    <h3 class="h4 mb-3 text-success">
+                        <i class="fas fa-star me-2"></i>
+                        @(currentLang == "tr" ? "Neden BB Gym?" : "Why BB Gym?")
+                    </h3>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check-circle text-success fs-5"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <strong>@(currentLang == "tr" ? "Modern Ekipmanlar" : "Modern Equipment")</strong>
+                                    <p class="mb-0 small text-muted">
+                                        @(currentLang == "tr" ? "En son teknoloji fitness ekipmanları" : "Latest technology fitness equipment")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-user-graduate text-primary fs-5"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <strong>@(currentLang == "tr" ? "Uzman Antrenörler" : "Expert Trainers")</strong>
+                                    <p class="mb-0 small text-muted">
+                                        @(currentLang == "tr" ? "Sertifikalı ve deneyimli antrenör kadrosu" : "Certified and experienced trainer staff")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-clock text-warning fs-5"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <strong>@(currentLang == "tr" ? "Esnek Saatler" : "Flexible Hours")</strong>
+                                    <p class="mb-0 small text-muted">
+                                        @(currentLang == "tr" ? "06:00 - 24:00 arası açık" : "Open from 06:00 - 24:00")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-users text-info fs-5"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <strong>@(currentLang == "tr" ? "Topluluk" : "Community")</strong>
+                                    <p class="mb-0 small text-muted">
+                                        @(currentLang == "tr" ? "Destekleyici ve motive edici topluluk" : "Supportive and motivating community")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px;">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-3">
+                        <i class="fas fa-chart-line text-success me-2"></i>
+                        @(currentLang == "tr" ? "İstatistikler" : "Statistics")
+                    </h4>
+                    <div class="row text-center g-3">
+                        <div class="col-6">
+                            <div class="p-3 bg-primary bg-opacity-10 rounded">
+                                <h3 class="text-primary mb-1">2500+</h3>
+                                <small>@(currentLang == "tr" ? "Mutlu Üye" : "Happy Members")</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-success bg-opacity-10 rounded">
+                                <h3 class="text-success mb-1">8</h3>
+                                <small>@(currentLang == "tr" ? "Yıl Deneyim" : "Years Experience")</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                <h3 class="text-warning mb-1">15</h3>
+                                <small>@(currentLang == "tr" ? "Uzman Antrenör" : "Expert Trainers")</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-info bg-opacity-10 rounded">
+                                <h3 class="text-info mb-1">24/7</h3>
+                                <small>@(currentLang == "tr" ? "Destek" : "Support")</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-3">
+                        <i class="fas fa-phone text-primary me-2"></i>
+                        @(currentLang == "tr" ? "İletişim" : "Contact")
+                    </h4>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-map-marker-alt text-danger me-3"></i>
+                        <div>
+                            <strong>@(currentLang == "tr" ? "Adres" : "Address")</strong>
+                            <p class="mb-0 small text-muted">
+                                @(currentLang == "tr" ? "Merkez Mah. Fitness Cad. No: 123 İstanbul" : "Center District. Fitness Street. No: 123 Istanbul")
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-phone text-success me-3"></i>
+                        <div>
+                            <strong>@(currentLang == "tr" ? "Telefon" : "Phone")</strong>
+                            <p class="mb-0 small text-muted">+90 212 555 0123</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-envelope text-info me-3"></i>
+                        <div>
+                            <strong>Email</strong>
+                            <p class="mb-0 small text-muted">info@bbgym.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+                We would be happy to see you among us with our modern equipment, expert trainers and friendly atmosphere.
+            </p>
+            
+            <h3 style="color: #2c3e50; margin: 30px 0 20px 0;">🎯 Our Mission</h3>
+            <p style="font-size: 16px; line-height: 1.8; color: #34495e;">
+                To raise individuals who adopt a healthy lifestyle, are self-confident and focused on their goals. 
+                Fitness is not just a sport, it's a lifestyle!
+            </p>
+            
+            <h3 style="color: #2c3e50; margin: 30px 0 20px 0;">🌟 Our Vision</h3>
+            <p style="font-size: 16px; line-height: 1.8; color: #34495e;">
+                To become Turkey's most loved and trusted gym chain. Contributing to public health by offering 
+                suitable programs for people of all ages and levels.
+            </p>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <!-- Stats Card -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 20px;">
+            <h3 style="margin-bottom: 25px;">📊 Rakamlarla BB Gym</h3>
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 3em; margin: 0;">2500+</h2>
+                <p>Mutlu Üye</p>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 3em; margin: 0;">15</h2>
+                <p>Uzman Antrenör</p>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 3em; margin: 0;">8</h2>
+                <p>Yıllık Tecrübe</p>
+            </div>
+            <div>
+                <h2 style="font-size: 3em; margin: 0;">1500m²</h2>
+                <p>Spor Salonu Alanı</p>
+            </div>
+        </div>
+        
+        <!-- Team Card -->
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h4 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">👥 Ekibimiz</h4>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                    <strong>🏆 Burak Bey</strong><br>
+                    <small style="color: #7f8c8d;">Genel Müdür & Kurucu</small>
+                </li>
+                <li style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                    <strong>💪 Barış Bey</strong><br>
+                    <small style="color: #7f8c8d;">Baş Antrenör</small>
+                </li>
+                <li style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                    <strong>🍎 Ayşe Hanım</strong><br>
+                    <small style="color: #7f8c8d;">Beslenme Uzmanı</small>
+                </li>
+                <li style="padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                    <strong>🎯 Mehmet Bey</strong><br>
+                    <small style="color: #7f8c8d;">Fitness Koordinatörü</small>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Values Section -->
+<div class="row" style="margin-top: 40px;">
+    <div class="col-md-12">
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 15px;">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 40px;">💎 Değerlerimiz</h2>
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-heart fa-3x" style="color: #e74c3c; margin-bottom: 20px;"></i>
+                    <h4>Tutku</h4>
+                    <p>Spor ve sağlık konusundaki tutkumuz her hizmetimize yansır.</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-handshake fa-3x" style="color: #3498db; margin-bottom: 20px;"></i>
+                    <h4>Güven</h4>
+                    <p>Üyelerimizle kurduğumuz güven ilişkisi bizim en büyük sermayemiz.</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-users fa-3x" style="color: #2ecc71; margin-bottom: 20px;"></i>
+                    <h4>Topluluk</h4>
+                    <p>Büyük bir spor ailesi olarak birlikte büyüyor, gelişiyoruz.</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <i class="fas fa-trophy fa-3x" style="color: #f39c12; margin-bottom: 20px;"></i>
+                    <h4>Mükemmellik</h4>
+                    <p>Her alanda mükemmelliği hedefliyoruz ve sürekli kendimizi geliştiriyoruz.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

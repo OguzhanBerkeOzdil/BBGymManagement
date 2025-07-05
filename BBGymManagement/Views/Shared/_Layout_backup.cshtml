@@ -1,0 +1,184 @@
+﻿@{
+    // Mevcut dili al - varsayılan İngilizce
+    var currentLang = Session["Language"] as string ?? "en";
+    var flagIcon = currentLang == "tr" ? "🇹🇷" : "🇺🇸";
+    var langName = currentLang == "tr" ? "Türkçe" : "English";
+}
+<!DOCTYPE html>
+<html lang="@currentLang">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BB Gym Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body { 
+            font-family: 'Segoe UI', 'Arial Unicode MS', 'Lucida Sans Unicode', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-feature-settings: "liga" 1, "kern" 1;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+                        @Html.ActionLink("📞 " + TextResources.Get("contact"), "Contact", "Home") | 
+                        @Html.ActionLink("💪 " + TextResources.Get("gym_membership"), "GymMembership", "Category")
+                    </p>
+                    <p>&copy; @DateTime.Now.Year - BB Gym Management System. @TextResources.Get("all_rights_reserved")</p>
+                </div>
+            </div>
+        </div>
+    </footer> html>
+<html lang="@currentLang">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BB Gym Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body { 
+            font-family: 'Segoe UI', 'Arial Unicode MS', 'Lucida Sans Unicode', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-feature-settings: "liga" 1, "kern" 1;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        }
+        .navbar-brand { 
+            font-weight: bold; 
+            font-size: 24px; 
+            color: #ff6b35 !important; 
+        }
+        .navbar-inverse { 
+            background: linear-gradient(45deg, #2c3e50, #34495e); 
+            border: none; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-inverse .navbar-nav > li > a { 
+            color: #ecf0f1 !important; 
+            transition: all 0.3s ease;
+        }
+        .navbar-inverse .navbar-nav > li > a:hover { 
+            color: #ff6b35 !important; 
+            background-color: rgba(255,107,53,0.1) !important;
+        }
+        .container.body-content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        footer {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: #ecf0f1;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        footer a { color: #ff6b35 !important; text-decoration: none; }
+        footer a:hover { color: #fff !important; }
+        .gym-hero {
+            text-align: center;
+            padding: 50px 0;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('~/Content/Images/gym-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("💪 BB GYM", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("🏋️ " + TextResources.Get("gym_membership"), "GymMembership", "Category")</li>
+                    <li>@Html.ActionLink("👨‍🏫 " + TextResources.Get("personal_trainer"), "PersonalTrainer", "Category")</li>
+                    <li>@Html.ActionLink("📊 " + TextResources.Get("body_fat_calculator"), "BodyFatCalculator", "Home")</li>
+                    <li>@Html.ActionLink("📞 " + TextResources.Get("contact"), "Contact", "Home")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Dil değiştirme menüsü - kullanıcı giriş yapmasa da görünsün -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @LanguageHelper.GetLanguageFlag(currentLang) @TextResources.Get("language") <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("🇺🇸 English", "ChangeLanguage", "Home", new { lang = "en", returnUrl = Request.RawUrl }, new { })
+                            </li>
+                            <li>
+                                @Html.ActionLink("🇹🇷 Türkçe", "ChangeLanguage", "Home", new { lang = "tr", returnUrl = Request.RawUrl }, new { })
+                            </li>
+                        </ul>
+                    </li>
+                    @{
+                        if (HttpContext.Current.User.Identity.IsAuthenticated)
+                        {
+                            var ticket = FormsAuthentication.Decrypt(HttpContext.Current.User.Identity.Name);
+                            var userdata = ticket.UserData;
+                            var roleName = userdata.Split(';')[1];
+                            if (roleName == "Admin")
+                            {
+                                <li><a href="/Admin/Home/Index"><i class="fas fa-cog"></i> Admin Panel</a></li>
+                            }
+                            <li>@Html.ActionLink("👤 My Account", "MyAccount", "Home")</li>
+                            <li><a href="#"><i class="fas fa-user"></i> @ticket.UserData.Split(';')[0]</a></li>
+                            <li>@Html.ActionLink("🚪 LogOut", "Logout", "Login")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("🔑 " + TextResources.Get("login"), "Index", "Login")</li>
+                            <li>@Html.ActionLink("📝 " + TextResources.Get("signup"), "Index", "Register")</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+   
+    <footer class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p style="margin: 10px 0;">
+                        @Html.ActionLink("🏠 Home", "Index", "Home") | 
+                        @Html.ActionLink("ℹ️ About", "About", "Home") | 
+                        @Html.ActionLink("📞 Contact", "Contact", "Home") | 
+                        @Html.ActionLink("💪 Membership", "GymMembership", "Category")
+                    </p>
+                    <p>&copy; @DateTime.Now.Year - BB Gym Management System. Tüm hakları saklıdır.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

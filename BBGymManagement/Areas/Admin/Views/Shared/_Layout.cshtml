@@ -1,56 +1,128 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@{
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+}
+<!DOCTYPE html>
+<html lang="@(currentLang == "tr" ? "tr" : "en")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Admin Panel</title>
+    <title>@ViewBag.Title - BB Gym Admin Panel</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Admin Panel Özel Stilleri */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .admin-navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #667eea !important;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-nav > li > a {
+            color: #2c3e50 !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        
+        .navbar-nav > li > a:hover {
+            background: #667eea;
+            color: white !important;
+        }
+        
+        .admin-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            margin: 30px auto;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .admin-footer {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin: 20px;
+            padding: 15px;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-default navbar-fixed-top admin-navbar">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("BBGYM Admin Panel", "Index", "Home", new { area = "Admin" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("🏋️ BB Gym Admin", "Index", "Home", new { area = "Admin" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            
+            <div class="collapse navbar-collapse" id="admin-navbar">
                 <ul class="nav navbar-nav">
-
-                    <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
-                    <li>@Html.ActionLink("Products", "Index", "Products")</li>
-                    <li>@Html.ActionLink("Rols", "Index", "Rols")</li>
-                    <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
+                    <li>@Html.ActionLink("📊 " + (currentLang == "tr" ? "Dashboard" : "Dashboard"), "Index", "Home", new { area = "Admin" }, null)</li>
+                    <li>@Html.ActionLink("👥 " + (currentLang == "tr" ? "Müşteriler" : "Customers"), "Index", "Customers", new { area = "Admin" }, null)</li>
+                    <li>@Html.ActionLink("🛍️ " + (currentLang == "tr" ? "Ürünler" : "Products"), "Index", "Products", new { area = "Admin" }, null)</li>
+                    <li>@Html.ActionLink("🎭 " + (currentLang == "tr" ? "Roller" : "Roles"), "Index", "Rols", new { area = "Admin" }, null)</li>
+                    <li>@Html.ActionLink("📦 " + (currentLang == "tr" ? "Siparişler" : "Orders"), "Index", "Orders", new { area = "Admin" }, null)</li>
                 </ul>
-                <ul class="nav navbar-nav" style="float:right;">
+                
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Language Selector -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-globe"></i> @(currentLang == "tr" ? "Türkçe" : "English") <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("ChangeLanguage", "Home", new { area = "", lang = "tr", returnUrl = Request.Url.PathAndQuery })"><i class="fas fa-flag"></i> Türkçe</a></li>
+                            <li><a href="@Url.Action("ChangeLanguage", "Home", new { area = "", lang = "en", returnUrl = Request.Url.PathAndQuery })"><i class="fas fa-flag"></i> English</a></li>
+                        </ul>
+                    </li>
                     @{
                         if (HttpContext.Current.User.Identity.IsAuthenticated)
                         {
-                            <li><a href="/Home/Index">Shop</a></li>
+                            <li><a href="/Home/Index"><i class="fas fa-store"></i> @(currentLang == "tr" ? "Ana Site" : "Main Site")</a></li>
                             var ticket = FormsAuthentication.Decrypt(HttpContext.Current.User.Identity.Name);
-                            <li><a href="#">@ticket.UserData.Split(';')[0]</a></li>
-                            <li><a href="/Login/Logout">Logout</a></li>
+                            <li><a href="#"><i class="fas fa-user-shield"></i> @ticket.UserData.Split(';')[0]</a></li>
+                            <li><a href="/Admin/Home/Logout"><i class="fas fa-sign-out-alt"></i> @(currentLang == "tr" ? "Çıkış" : "Logout")</a></li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink("SignIn", "Index", "Login")</li>
-                            <li>@Html.ActionLink("SignUp", "Index", "Register")</li>
+                            <li>@Html.ActionLink((currentLang == "tr" ? "Giriş" : "Login"), "Index", "Login")</li>
                         }
                     }
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    </nav>
+    
+    <div class="container-fluid" style="padding-top: 80px;">
+        <div class="admin-content">
+            @RenderBody()
+        </div>
+        
+        <div class="admin-footer">
+            <p>© @DateTime.Now.Year BB Gym Management System - Admin Panel</p>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

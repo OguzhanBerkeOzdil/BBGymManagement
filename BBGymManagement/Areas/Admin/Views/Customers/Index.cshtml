@@ -1,76 +1,132 @@
 ﻿@model IEnumerable<BBGymManagement.Models.Entities.Customer>
 
 @{
-    ViewBag.Title = "Index";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = currentLang == "tr" ? "Müşteri Yönetimi" : "Customer Management";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="admin-page-container" style="padding: 30px;">
+    <!-- Page Header -->
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #2c3e50; font-weight: 700; margin-bottom: 5px;">
+                <i class="fas fa-users me-3"></i>@(currentLang == "tr" ? "Müşteri Yönetimi" : "Customer Management")
+            </h2>
+            <p class="text-muted">@(currentLang == "tr" ? "Tüm müşterileri görüntüleyin ve yönetin" : "View and manage all customers")</p>
+        </div>
+        <div>
+            @Html.ActionLink((currentLang == "tr" ? "Yeni Müşteri Ekle" : "Add New Customer"), "Create", null, new { @class = "btn btn-primary", @style = "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px; padding: 12px 25px; font-weight: 600;" })
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Surname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VerPassword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecurityQuestion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecurityAnswer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RolId)
-        </th>
-        <th></th>
-    </tr>
+    <!-- Customers Table -->
+    <div class="card" style="border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px 20px 0 0; padding: 20px;">
+            <h5 class="mb-0"><i class="fas fa-table me-2"></i>Müşteri Listesi (@(Model?.Count() ?? 0) müşteri)</h5>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" style="border-radius: 0 0 20px 20px;">
+                        <thead style="background: #f8f9fa;">
+                            <tr>
+                                <th style="padding: 20px; border: none; font-weight: 600; color: #2c3e50;">
+                                    <i class="fas fa-user me-2"></i>@(currentLang == "tr" ? "Ad" : "First Name")
+                                </th>
+                                <th style="padding: 20px; border: none; font-weight: 600; color: #2c3e50;">
+                                    <i class="fas fa-user me-2"></i>@(currentLang == "tr" ? "Soyad" : "Last Name")
+                                </th>
+                                <th style="padding: 20px; border: none; font-weight: 600; color: #2c3e50;">
+                                    <i class="fas fa-envelope me-2"></i>@(currentLang == "tr" ? "E-posta" : "Email")
+                                </th>
+                                <th style="padding: 20px; border: none; font-weight: 600; color: #2c3e50;">
+                                    <i class="fas fa-shield-alt me-2"></i>@(currentLang == "tr" ? "Güvenlik Sorusu" : "Security Question")
+                                </th>
+                                <th style="padding: 20px; border: none; font-weight: 600; color: #2c3e50;">
+                                    <i class="fas fa-user-tag me-2"></i>@(currentLang == "tr" ? "Rol" : "Role")
+                                </th>
+                                <th style="padding: 20px; border: none; font-weight: 600; color: #2c3e50; text-align: center;">
+                                    <i class="fas fa-cogs me-2"></i>@(currentLang == "tr" ? "İşlemler" : "Actions")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr style="transition: all 0.3s ease;">
+                                    <td style="padding: 20px; border: none; vertical-align: middle;">
+                                        <div class="d-flex align-items-center">
+                                            <div class="customer-avatar me-3" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                                @(item.Name?.Substring(0, 1).ToUpper())
+                                            </div>
+                                            <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 20px; border: none; vertical-align: middle;">
+                                        <strong>@Html.DisplayFor(modelItem => item.Surname)</strong>
+                                    </td>
+                                    <td style="padding: 20px; border: none; vertical-align: middle;">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-envelope text-muted me-2"></i>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </div>
+                                    </td>
+                                    <td style="padding: 20px; border: none; vertical-align: middle;">
+                                        <span class="text-muted small">@Html.DisplayFor(modelItem => item.SecurityQuestion)</span>
+                                    </td>
+                                    <td style="padding: 20px; border: none; vertical-align: middle;">
+                                        <span class="badge" style="background: linear-gradient(45deg, #4facfe, #00f2fe); color: white; border-radius: 20px; padding: 8px 15px;">
+                                            @(item.RolId == 1 ? (currentLang == "tr" ? "Admin" : "Admin") : (currentLang == "tr" ? "Müşteri" : "Customer"))
+                                        </span>
+                                    </td>
+                                    <td style="padding: 20px; border: none; vertical-align: middle; text-align: center;">
+                                        <div class="btn-group" role="group">
+                                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-sm btn-outline-info" style="border-radius: 8px; margin-right: 5px;" title="@(currentLang == "tr" ? "Detaylar" : "Details")">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-outline-warning" style="border-radius: 8px; margin-right: 5px;" title="@(currentLang == "tr" ? "Düzenle" : "Edit")">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger" style="border-radius: 8px;" title="@(currentLang == "tr" ? "Sil" : "Delete")" onclick="return confirm('@(currentLang == "tr" ? "Bu müşteriyi silmek istediğinizden emin misiniz?" : "Are you sure you want to delete this customer?")')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-5x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted">@(currentLang == "tr" ? "Henüz müşteri bulunmuyor" : "No customers found")</h4>
+                    <p class="text-muted">@(currentLang == "tr" ? "İlk müşterinizi eklemek için yukarıdaki \"Yeni Müşteri Ekle\" butonunu kullanın." : "Use the \"Add New Customer\" button above to add your first customer.")</p>
+                    @Html.ActionLink((currentLang == "tr" ? "Yeni Müşteri Ekle" : "Add New Customer"), "Create", null, new { @class = "btn btn-primary", @style = "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px; padding: 12px 25px; font-weight: 600;" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Surname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VerPassword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecurityQuestion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecurityAnswer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RolId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+<style>
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .customer-avatar {
+        transition: all 0.3s ease;
+    }
+    
+    .customer-avatar:hover {
+        transform: scale(1.1);
+    }
+</style>

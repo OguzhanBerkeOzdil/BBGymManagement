@@ -41,24 +41,23 @@
             color: white !important; 
             transition: all 0.3s ease !important;
             font-weight: 500 !important;
-            padding: 10px 15px !important;
+            padding: 10px 20px !important;
             border-radius: 8px !important;
-            margin: 0 2px !important;
-            white-space: nowrap !important;
+            margin: 0 5px !important;
         }
         .navbar-inverse .navbar-nav > li > a:hover { 
             background: rgba(255,255,255,0.2) !important; 
             color: white !important; 
             transform: translateY(-2px) !important;
         }
-        .container.body-content {
-            background: white !important;
-            border-radius: 15px !important;
-            margin-top: 20px !important;
-            margin-bottom: 20px !important;
-            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1) !important;
-            padding: 40px !important;
-        }
+        /* Auth sayfalar için özel container */
+        .auth-container {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            min-height: calc(100vh - 160px) !important;
         }
         footer {
             background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%) !important;
@@ -77,15 +76,6 @@
             color: #1a252f !important; 
             transform: translateY(-1px) !important;
             text-decoration: none !important;
-        }
-        .gym-hero {
-            text-align: center !important;
-            padding: 50px 0 !important;
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%) !important;
-            color: white !important;
-            border-radius: 15px !important;
-            margin-bottom: 30px !important;
-            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.1) !important;
         }
     </style>
 </head>
@@ -108,59 +98,42 @@
                     <li>@Html.ActionLink("📞 " + (currentLang == "tr" ? "İletişim" : "Contact"), "Contact", "Home")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- Dil değiştirme menüsü - kullanıcı giriş yapmasa da görünsün -->
+                    <!-- Dil değiştirme menüsü -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            @flagIcon @(currentLang == "tr" ? "Dil" : "Language") <span class="caret"></span>
+                            @flagIcon @langName <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                @Html.ActionLink("🇺🇸 English", "ChangeLanguage", "Home", new { lang = "en", returnUrl = Request.RawUrl }, new { })
+                                <a href="@Url.Action("ChangeLanguage", "Home", new { lang = "en", returnUrl = Request.Url.PathAndQuery })">🇺🇸 English</a>
                             </li>
                             <li>
-                                @Html.ActionLink("🇹🇷 Türkçe", "ChangeLanguage", "Home", new { lang = "tr", returnUrl = Request.RawUrl }, new { })
+                                <a href="@Url.Action("ChangeLanguage", "Home", new { lang = "tr", returnUrl = Request.Url.PathAndQuery })">🇹🇷 Türkçe</a>
                             </li>
                         </ul>
                     </li>
-                    @{
-                        if (HttpContext.Current.User.Identity.IsAuthenticated)
-                        {
-                            var ticket = FormsAuthentication.Decrypt(HttpContext.Current.User.Identity.Name);
-                            var userdata = ticket.UserData;
-                            var roleName = userdata.Split(';')[1];
-                            if (roleName == "Admin")
-                            {
-                                <li><a href="/Admin/Home/Index"><i class="fas fa-cog"></i> Admin Panel</a></li>
-                            }
-                            <li>@Html.ActionLink("👤 My Account", "MyAccount", "Home")</li>
-                            <li><a href="#"><i class="fas fa-user"></i> @ticket.UserData.Split(';')[0]</a></li>
-                            <li>@Html.ActionLink("🚪 LogOut", "Logout", "Login")</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("🔑 " + (currentLang == "tr" ? "Giriş" : "Login"), "Index", "Login")</li>
-                            <li>@Html.ActionLink("📝 " + (currentLang == "tr" ? "Kayıt" : "Register"), "Index", "Register")</li>
-                        }
-                    }
+                    <li>@Html.ActionLink("🔑 " + (currentLang == "tr" ? "Giriş" : "Login"), "Index", "Login")</li>
+                    <li>@Html.ActionLink("📝 " + (currentLang == "tr" ? "Kayıt" : "Register"), "Index", "Register")</li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+
+    <!-- Auth sayfalar için özel container -->
+    <div class="container-fluid auth-container" style="padding-top: 80px;">
         @RenderBody()
     </div>
-   
-    <footer class="text-center">
+
+    <footer>
         <div class="container">
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-md-12">
-                    <p style="margin: 10px 0;">
-                        @Html.ActionLink("🏠 " + (currentLang == "tr" ? "Ana Sayfa" : "Home"), "Index", "Home") | 
-                        @Html.ActionLink("ℹ️ " + (currentLang == "tr" ? "Hakkımızda" : "About"), "About", "Home") | 
-                        @Html.ActionLink("📞 " + (currentLang == "tr" ? "İletişim" : "Contact"), "Contact", "Home") | 
-                        @Html.ActionLink("💪 " + (currentLang == "tr" ? "Spor Salonu Üyeliği" : "Gym Membership"), "GymMembership", "Category")
+                    <p>&copy; @DateTime.Now.Year - BB Gym Management System - @(currentLang == "tr" ? "Tüm hakları saklıdır" : "All rights reserved")</p>
+                    <p>
+                        @Html.ActionLink(currentLang == "tr" ? "Ana Sayfa" : "Home", "Index", "Home") |
+                        @Html.ActionLink(currentLang == "tr" ? "Hakkımızda" : "About", "About", "Home") |
+                        @Html.ActionLink(currentLang == "tr" ? "İletişim" : "Contact", "Contact", "Home")
                     </p>
-                    <p>&copy; @DateTime.Now.Year - BB Gym Management System. @(currentLang == "tr" ? "Tüm hakları saklıdır." : "All rights reserved.")</p>
                 </div>
             </div>
         </div>
@@ -211,28 +184,5 @@
     </script>
     
     @RenderSection("scripts", required: false)
-    
-    <!-- Footer -->
-    <footer style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 30px 0; margin-top: 50px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-dumbbell"></i> BB GYM</h5>
-                    <p>@(currentLang == "tr" ? "Hayalinizdeki vücuda ulaşmak için en iyi spor salonu." : "The best gym to achieve your dream body.")</p>
-                </div>
-                <div class="col-md-6 text-right">
-                    <p>&copy; @DateTime.Now.Year BB Gym - @(currentLang == "tr" ? "Tüm hakları saklıdır" : "All rights reserved")</p>
-                    <p>
-                        <a href="@Url.Action("Contact", "Home")" style="color: white; text-decoration: none;">
-                            @(currentLang == "tr" ? "İletişim" : "Contact")
-                        </a> | 
-                        <a href="@Url.Action("About", "Home")" style="color: white; text-decoration: none;">
-                            @(currentLang == "tr" ? "Hakkımızda" : "About")
-                        </a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
 </body>
 </html>

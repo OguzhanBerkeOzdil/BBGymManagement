@@ -1,90 +1,285 @@
-﻿@model BBGymManagement.Models.Entities.Customer
+@model BBGymManagement.Models.Entities.Customer
 
 @{
-    ViewBag.Title = "Index";
+    var currentLang = Session["Language"] as string ?? "en";
+    ViewBag.Title = (currentLang == "tr" ? "Kayıt Ol" : "Sign Up") + " - BB Gym";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- 
+<!-- Hero Section - Register Banner -->
+<div class="gym-hero" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 40px 0; text-align: center; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(39, 174, 96, 0.1);">
+    <h1 class="display-4">
+        <i class="fas fa-dumbbell fa-lg" style="margin-right: 15px;"></i>
+        @(currentLang == "tr" ? "🚀 Kayıt Ol" : "🚀 Sign Up")
+    </h1>
+    <p class="lead">@(currentLang == "tr" ? "BB Gym ailesine katılın ve fitness yolculuğunuza başlayın" : "Join the BB Gym family and start your fitness journey")</p>
+</div>
 
+<!-- Register Form Section -->
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="modern-card" style="padding: 40px; border-radius: 20px; box-shadow: 0 15px 40px rgba(44, 62, 80, 0.1); background: white; margin-bottom: 50px;">
+            
+            @if (TempData["error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible" style="border-radius: 15px; border: none; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: white;">&times;</button>
+                    <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>@TempData["error"]
+                </div>
+            }
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h2>Register Page</h2>
-        <h3 style="color:red;">@TempData["error"]</h3>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            @if (ViewBag.ValidationErrors != null)
+            {
+                <div class="alert alert-warning alert-dismissible" style="border-radius: 15px; border: none; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: white;">&times;</button>
+                    <strong>Debug Info:</strong>
+                    <ul style="margin: 10px 0;">
+                        @foreach (string error in ViewBag.ValidationErrors)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (ViewBag.DebugInfo != null)
+            {
+                <div class="alert alert-info alert-dismissible" style="border-radius: 15px; border: none; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                    <button type="button" class="close" data-dismiss="alert" style="color: white;">&times;</button>
+                    <strong>Model Values:</strong> @ViewBag.DebugInfo
+                </div>
+            }
+
+            <div class="text-center mb-4">
+                <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white;">
+                    <i class="fas fa-user-plus fa-2x"></i>
+                </div>
+                <h3 style="color: #2c3e50; font-weight: 600; margin-bottom: 10px;">
+                    @(currentLang == "tr" ? "Yeni Hesap Oluşturun" : "Create New Account")
+                </h3>
+                <p style="color: #7f8c8d; margin-bottom: 0;">
+                    @(currentLang == "tr" ? "BB Gym'e hoş geldiniz! Lütfen bilgilerinizi doldurun." : "Welcome to BB Gym! Please fill in your information.")
+                </p>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            @using (Html.BeginForm("Index", "Register", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",@type= "email" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="Name" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                                <i class="fas fa-user" style="margin-right: 8px; color: #27ae60;"></i>
+                                @(currentLang == "tr" ? "Ad" : "Name") *
+                            </label>
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "Adınızı girin" : "Enter your name",
+                                required = "required",
+                                style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;",
+                                name = "Name",
+                                id = "Name"
+                            }})
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="Surname" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                                <i class="fas fa-user" style="margin-right: 8px; color: #27ae60;"></i>
+                                @(currentLang == "tr" ? "Soyad" : "Surname") *
+                            </label>
+                            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "Soyadınızı girin" : "Enter your surname",
+                                required = "required",
+                                style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;",
+                                name = "Surname",
+                                id = "Surname"
+                            }})
+                            @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type="password" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group mb-4">
+                    <label for="Email" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                        <i class="fas fa-envelope" style="margin-right: 8px; color: #27ae60;"></i>
+                        @(currentLang == "tr" ? "E-posta Adresi" : "Email Address") *
+                    </label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { 
+                        @class = "form-control", 
+                        placeholder = currentLang == "tr" ? "ornek@email.com" : "example@email.com",
+                        required = "required",
+                        type = "email",
+                        style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;",
+                        name = "Email",
+                        id = "Email"
+                    }})
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small" })
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.VerPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.VerPassword, new { htmlAttributes = new { @class = "form-control",@type = "password" } })
-                @Html.ValidationMessageFor(model => model.VerPassword, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group mb-4">
+                    <label for="Password" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                        <i class="fas fa-lock" style="margin-right: 8px; color: #27ae60;"></i>
+                        @(currentLang == "tr" ? "Şifre" : "Password") *
+                    </label>
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { 
+                        @class = "form-control", 
+                        placeholder = currentLang == "tr" ? "Güvenli bir şifre oluşturun" : "Create a secure password",
+                        required = "required",
+                        type = "password",
+                        minlength = "6",
+                        style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;",
+                        name = "Password",
+                        id = "Password"
+                    }})
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger small" })
+                    <small class="form-text text-muted">
+                        @(currentLang == "tr" ? "En az 6 karakter olmalıdır." : "Must be at least 6 characters.")
+                    </small>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SecurityQuestion, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SecurityQuestion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SecurityQuestion, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="Phone" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                                <i class="fas fa-phone" style="margin-right: 8px; color: #27ae60;"></i>
+                                @(currentLang == "tr" ? "Telefon" : "Phone")
+                            </label>
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { 
+                                @class = "form-control", 
+                                placeholder = currentLang == "tr" ? "05xx xxx xx xx" : "+90 5xx xxx xx xx",
+                                type = "tel",
+                                style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;"
+                            }})
+                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label for="BirthDate" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                                <i class="fas fa-birthday-cake" style="margin-right: 8px; color: #27ae60;"></i>
+                                @(currentLang == "tr" ? "Doğum Tarihi" : "Birth Date")
+                            </label>
+                            @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { 
+                                @class = "form-control", 
+                                type = "date",
+                                style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease;"
+                            }})
+                            @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger small" })
+                        </div>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SecurityAnswer, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SecurityAnswer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SecurityAnswer, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-group mb-4">
+                    <label for="Address" style="color: #2c3e50; font-weight: 500; margin-bottom: 8px;">
+                        <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #27ae60;"></i>
+                        @(currentLang == "tr" ? "Adres" : "Address")
+                    </label>
+                    @Html.TextAreaFor(model => model.Address, new { 
+                        @class = "form-control", 
+                        placeholder = currentLang == "tr" ? "Tam adresinizi yazın" : "Enter your full address",
+                        rows = "3",
+                        style = "border-radius: 12px; border: 2px solid #ecf0f1; padding: 15px; font-size: 16px; transition: all 0.3s ease; resize: vertical;"
+                    })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger small" })
+                </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="terms" required style="margin-top: 6px;">
+                    <label class="form-check-label" for="terms" style="color: #7f8c8d; margin-left: 8px;">
+                        @(currentLang == "tr" ? "Kullanım şartlarını ve gizlilik politikasını kabul ediyorum." : "I agree to the terms of service and privacy policy.")
+                        <span class="text-danger">*</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn w-100 mb-4" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 600; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); transition: all 0.3s ease;">
+                    <i class="fas fa-user-plus" style="margin-right: 10px;"></i>
+                    @(currentLang == "tr" ? "Kayıt Ol" : "Sign Up")
+                </button>
+            }
+
+            <div class="text-center">
+                <hr style="margin: 30px 0; border-color: #ecf0f1;">
+                <p style="color: #7f8c8d; margin-bottom: 0;">
+                    @(currentLang == "tr" ? "Zaten hesabınız var mı?" : "Already have an account?")
+                    @Html.ActionLink(
+                        currentLang == "tr" ? "Giriş Yap" : "Sign In", 
+                        "Index", 
+                        "Login", 
+                        null, 
+                        new { 
+                            style = "color: #3498db; text-decoration: none; font-weight: 600; margin-left: 5px;",
+                            onmouseover = "this.style.color='#2980b9'",
+                            onmouseout = "this.style.color='#3498db'"
+                        }
+                    )
+                </p>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+<style>
+.form-control:focus {
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25) !important;
 }
+
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4) !important;
+}
+
+.form-check-input:checked {
+    background-color: #27ae60 !important;
+    border-color: #27ae60 !important;
+}
+</style>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Password strength indicator
+document.getElementById('Password').addEventListener('input', function() {
+    const password = this.value;
+    let strength = document.querySelector('.password-strength');
+    
+    if (!strength) {
+        strength = document.createElement('div');
+        strength.className = 'password-strength small mt-1';
+        this.parentNode.appendChild(strength);
+    }
+    
+    if (password.length === 0) {
+        strength.innerHTML = '';
+        return;
+    }
+    
+    if (password.length < 6) {
+        strength.innerHTML = '<span style="color: #e74c3c;">@(currentLang == "tr" ? "Zayıf şifre" : "Weak password")</span>';
+    } else if (password.length < 10) {
+        strength.innerHTML = '<span style="color: #f39c12;">@(currentLang == "tr" ? "Orta şifre" : "Medium password")</span>';
+    } else {
+        strength.innerHTML = '<span style="color: #27ae60;">@(currentLang == "tr" ? "Güçlü şifre" : "Strong password")</span>';
+    }
+});
+</script>

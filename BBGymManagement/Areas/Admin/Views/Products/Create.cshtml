@@ -1,80 +1,96 @@
 ﻿@model BBGymManagement.Models.Entities.Product
 
 @{
-    ViewBag.Title = "Create";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = currentLang == "tr" ? "Yeni Ürün Ekle" : "Add New Product";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-
-
-
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-<div class="form-horizontal">
-    <h4>Product</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-        </div>
+<div class="admin-page-container" style="padding: 30px;">
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+        <h2 style="color: #2c3e50; font-weight: 700; margin-bottom: 5px;">
+            <i class="fas fa-plus-circle me-3"></i>@(currentLang == "tr" ? "Yeni Ürün Ekle" : "Add New Product")
+        </h2>
+        <p class="text-muted">@(currentLang == "tr" ? "Yeni bir ürün ekleyerek sisteme dahil edin" : "Add a new product to include in the system")</p>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Form Container -->
+    <div class="card border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-body p-5">
+            @using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <div class="row g-4">
+                    <!-- Product Name -->
+                    <div class="col-md-6">
+                        <label for="Name" class="form-label fw-bold">@(currentLang == "tr" ? "Ürün Adı" : "Product Name")</label>
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = (currentLang == "tr" ? "Ürün adını girin" : "Enter product name") } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Price -->
+                    <div class="col-md-6">
+                        <label for="Price" class="form-label fw-bold">@(currentLang == "tr" ? "Fiyat" : "Price")</label>
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @placeholder = "0.00", @type = "number", @step = "0.01" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label for="Description" class="form-label fw-bold">@(currentLang == "tr" ? "Açıklama" : "Description")</label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "4", @placeholder = (currentLang == "tr" ? "Ürün açıklamasını girin" : "Enter product description") })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Days -->
+                    <div class="col-md-6">
+                        <label for="Day" class="form-label fw-bold">@(currentLang == "tr" ? "Gün Sayısı" : "Days")</label>
+                        @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "30" } })
+                        @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-6">
+                        <label for="CategoryId" class="form-label fw-bold">@(currentLang == "tr" ? "Kategori" : "Category")</label>
+                        @Html.EnumDropDownListFor(model => model.CategoryId, (currentLang == "tr" ? "Kategori seçin" : "Select category"), new { @class = "form-select form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="col-12">
+                        <label for="file" class="form-label fw-bold">@(currentLang == "tr" ? "Ürün Resmi" : "Product Image")</label>
+                        <input id="file" type="file" class="form-control" name="file" accept="image/*" />
+                        @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-12">
+                        <div class="d-flex gap-3 justify-content-end">
+                            @Html.ActionLink((currentLang == "tr" ? "Listeye Dön" : "Back to List"), "Index", null, new { @class = "btn btn-outline-secondary px-4", @style = "border-radius: 15px;" })
+                            <input type="submit" value="@(currentLang == "tr" ? "Ürün Ekle" : "Add Product")" class="btn btn-success px-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border: none; border-radius: 15px; font-weight: 600;" />
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Day, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.CategoryId,  new { @class = "form-select form-control" })
-            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageUrl, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <input id="file" type="file" class="form-control" name="file" />
-            @*@Html.EditorFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control", @type="file" } })*@
-            @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>

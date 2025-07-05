@@ -1,34 +1,193 @@
 ﻿@model IEnumerable<BBGymManagement.Models.Entities.Rol>
 
 @{
-    ViewBag.Title = "Index";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = currentLang == "tr" ? "Rol Yönetimi" : "Role Management";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="admin-page-container" style="padding: 30px;">
+    <!-- Page Header -->
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #2c3e50; font-weight: 700; margin-bottom: 5px;">
+                <i class="fas fa-user-shield me-3"></i>Rol Yönetimi
+            </h2>
+            <p class="text-muted">Sistem rollerini görüntüleyin ve yönetin</p>
+        </div>
+        <div>
+            @Html.ActionLink("Yeni Rol Ekle", "Create", null, new { @class = "btn btn-info", @style = "background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border: none; border-radius: 15px; padding: 12px 25px; font-weight: 600;" })
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
+    <!-- Roles Cards -->
+    <div class="card" style="border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="card-header" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; border-radius: 20px 20px 0 0; padding: 20px;">
+            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Sistem Rolleri (@(Model?.Count() ?? 0) rol)</h5>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            @if (Model != null && Model.Any())
+            {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                            <div class="role-card" style="background: white; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%; border: 2px solid #f0f0f0;">
+                                <!-- Role Icon -->
+                                <div class="role-header text-center" style="padding: 30px 20px 20px;">
+                                    <div class="role-icon" style="width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; background: @(item.Name == "Admin" ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" : item.Name == "Customer" ? "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" : "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)");">
+                                        @if (item.Name == "Admin")
+                                        {
+                                            <i class="fas fa-crown"></i>
+                                        }
+                                        else if (item.Name == "Customer")
+                                        {
+                                            <i class="fas fa-user"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-user-tag"></i>
+                                        }
+                                    </div>
+                                    
+                                    <h4 style="color: #2c3e50; font-weight: 600; margin-bottom: 10px;">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </h4>
+                                    
+                                    <p style="color: #7f8c8d; margin-bottom: 20px; font-size: 0.9rem;">
+                                        @if (item.Name == "Admin")
+                                        {
+                                            <span>Sistem yöneticisi rolü - Tüm yetkilere sahip</span>
+                                        }
+                                        else if (item.Name == "Customer")
+                                        {
+                                            <span>Standart müşteri rolü - Temel işlemler</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Özel rol - Belirlenen yetkiler</span>
+                                        }
+                                    </p>
+                                </div>
+                                
+                                <!-- Role Permissions -->
+                                <div class="role-permissions" style="padding: 0 20px 20px;">
+                                    <div class="permissions-list mb-3">
+                                        @if (item.Name == "Admin")
+                                        {
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Tüm müşterileri yönetme</small>
+                                            </div>
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Ürün ekleme/düzenleme</small>
+                                            </div>
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Sipariş yönetimi</small>
+                                            </div>
+                                            <div class="permission-item d-flex align-items-center">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Sistem ayarları</small>
+                                            </div>
+                                        }
+                                        else if (item.Name == "Customer")
+                                        {
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-check-circle text-info me-2"></i>
+                                                <small>Ürün görüntüleme</small>
+                                            </div>
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-check-circle text-info me-2"></i>
+                                                <small>Sipariş verme</small>
+                                            </div>
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-check-circle text-info me-2"></i>
+                                                <small>Profil güncelleme</small>
+                                            </div>
+                                            <div class="permission-item d-flex align-items-center">
+                                                <i class="fas fa-check-circle text-info me-2"></i>
+                                                <small>Sipariş takibi</small>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="permission-item d-flex align-items-center mb-2">
+                                                <i class="fas fa-cog text-muted me-2"></i>
+                                                <small>Özel yetkiler tanımlanabilir</small>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="role-actions" style="padding: 0 20px 20px;">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-sm btn-outline-info" style="border-radius: 10px; flex: 1; margin-right: 5px;">
+                                            <i class="fas fa-eye me-1"></i>@(currentLang == "tr" ? "Detay" : "Details")
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-outline-warning" style="border-radius: 10px; flex: 1; margin: 0 5px;">
+                                            <i class="fas fa-edit me-1"></i>@(currentLang == "tr" ? "Düzenle" : "Edit")
+                                        </a>
+                                        
+                                        @if (item.Name != "Admin" && item.Name != "Customer")
+                                        {
+                                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-outline-danger" style="border-radius: 10px; flex: 1; margin-left: 5px;" onclick="return confirm('@(currentLang == "tr" ? "Bu rolü silmek istediğinizden emin misiniz?" : "Are you sure you want to delete this role?")')">
+                                                <i class="fas fa-trash me-1"></i>@(currentLang == "tr" ? "Sil" : "Delete")
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-outline-secondary" style="border-radius: 10px; flex: 1; margin-left: 5px;" disabled title="@(currentLang == "tr" ? "Sistem rolleri silinemez" : "System roles cannot be deleted")">
+                                                <i class="fas fa-lock me-1"></i>@(currentLang == "tr" ? "Korumalı" : "Protected")
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-user-shield fa-5x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted">Henüz rol bulunmuyor</h4>
+                    <p class="text-muted">İlk rolünüzü eklemek için yukarıdaki "Yeni Rol Ekle" butonunu kullanın.</p>
+                    @Html.ActionLink("Yeni Rol Ekle", "Create", null, new { @class = "btn btn-info", @style = "background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border: none; border-radius: 15px; padding: 12px 25px; font-weight: 600;" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+<style>
+    .role-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        border-color: #667eea;
+    }
+    
+    .role-icon {
+        transition: all 0.3s ease;
+    }
+    
+    .role-card:hover .role-icon {
+        transform: scale(1.1);
+    }
+    
+    .permission-item {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    .role-actions .btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        font-weight: 600;
+    }
+</style>

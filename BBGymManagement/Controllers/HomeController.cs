@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Windows.Documents;
 using WebGrease.Extensions;
 using Microsoft.Ajax.Utilities;
 using BBGymManagement.Helpers;
@@ -22,36 +21,79 @@ namespace BBGymManagement.Controllers
         public ProductService _productService = new ProductService();
         public CustomerService _customerService = new CustomerService();
         public OrderService _orderService = new OrderService();
+        /// <summary>
+        /// Ana sayfa - çoklu dil destekli modern tasarım
+        /// </summary>
         public ActionResult Index()
         {
+            // Dil bilgisini ViewBag'e ekle
+            ViewBag.CurrentLanguage = Session["Language"] as string ?? "en";
             return View();
         }
 
+        /// <summary>
+        /// Hakkımızda sayfası - çoklu dil destekli
+        /// </summary>
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.CurrentLanguage = Session["Language"] as string ?? "en";
+            ViewBag.Message = ViewBag.CurrentLanguage == "tr" ? "Uygulama açıklama sayfası." : "Your application description page.";
             return View();
         }
 
+        /// <summary>
+        /// İletişim sayfası - çoklu dil destekli
+        /// </summary>
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            ViewBag.CurrentLanguage = Session["Language"] as string ?? "en";
+            ViewBag.Message = ViewBag.CurrentLanguage == "tr" ? "İletişim sayfası." : "Your contact page.";
             return View();
         }
 
+        /// <summary>
+        /// Vücut yağ oranı hesaplayıcısı - çoklu dil destekli
+        /// </summary>
         public ActionResult BodyFatCalculator()
         {
+            ViewBag.CurrentLanguage = Session["Language"] as string ?? "en";
             ViewBag.BodyFat = 9999;
             return View();
         }
 
+        public ActionResult TestTurkce()
+        {
+            return View();
+        }
+
+        // Dil değiştirme action'ı - kullanıcı header'dan dil seçtiğinde burası çalışır
+        public ActionResult ChangeLanguage(string lang, string returnUrl)
+        {
+            // Güvenlik için sadece desteklenen dilleri kabul et
+            if (lang == "en" || lang == "tr")
+            {
+                LanguageHelper.SetLanguage(lang);
+            }
+            
+            // Kullanıcıyı geldiği sayfaya geri gönder, yoksa ana sayfaya
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            
+            return RedirectToAction("Index");
+        }
 
 
+
+        /// <summary>
+        /// Vücut yağ oranı hesaplama POST işlemi - çoklu dil destekli
+        /// </summary>
         [HttpPost]
         public ActionResult BodyFatCalculator(BodyFatCalculatorModel model)
         {
+            ViewBag.CurrentLanguage = Session["Language"] as string ?? "en";
+            
             if (model.Sex.ToString() == "Male")
             {
                 var result = 495 / (1.0324 - 0.19077 * Math.Log10(model.WaistCircumference - model.NeckCircumference) + 0.15456 * Math.Log10(model.Height)) - 450;

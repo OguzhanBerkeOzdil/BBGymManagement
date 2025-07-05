@@ -20,14 +20,39 @@ namespace BBGymManagement.Helpers
             return sched;
         }
 
-        public async void QuestTrigger()
+        /// <summary>
+        /// Quest zamanlamasını başlatır - async void yerine Task döner
+        /// </summary>
+        public async Task QuestTriggerAsync()
         {
-            IScheduler sched = await Run();
+            try
+            {
+                IScheduler sched = await Run();
 
-            IJobDetail quest = JobBuilder.Create<Quest>().WithIdentity("Quest", null).Build();
+                IJobDetail quest = JobBuilder.Create<Quest>().WithIdentity("Quest", null).Build();
 
-            ISimpleTrigger TriggerQuest = (ISimpleTrigger)TriggerBuilder.Create().WithIdentity("Quest").StartAt(DateTime.UtcNow).WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever()).Build();
-            await sched.ScheduleJob(quest, TriggerQuest);
+                ISimpleTrigger TriggerQuest = (ISimpleTrigger)TriggerBuilder.Create()
+                    .WithIdentity("Quest")
+                    .StartAt(DateTime.UtcNow)
+                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                    .Build();
+                    
+                await sched.ScheduleJob(quest, TriggerQuest);
+            }
+            catch (Exception ex)
+            {
+                // Hata loglama - gerektiğinde logging framework eklenebilir
+                System.Diagnostics.Debug.WriteLine($"Quest trigger hatası: {ex.Message}");
+            }
+        }
+        
+        /// <summary>
+        /// Fire-and-forget şekilde quest trigger'ı başlatan wrapper metod
+        /// </summary>
+        public void QuestTrigger()
+        {
+            // Fire-and-forget şekilde async metodu çalıştır
+            Task.Run(async () => await QuestTriggerAsync());
         }
     }
 }

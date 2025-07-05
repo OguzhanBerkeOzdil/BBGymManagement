@@ -1,25 +1,260 @@
-﻿@model List<BBGymManagement.MVVM.ProductViewModel>
 @{
-    ViewBag.Title = "PersonalTrainer";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = (currentLang == "tr" ? "Kişisel Antrenör" : "Personal Trainer") + " - BB Gym";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>PersonalTrainer</h2>
+
 <div class="container-fluid">
-    @{
-        foreach (var item in Model)
-        {
-            <div class="col-md-4">
-                <div class="card" style="width: 15rem;">
-                    <a href="/Product/Detail/@item.Id">
-                        <img src="@item.ImageUrl" class="img-fluid img-thumbnail img-responsive" alt="@item.Name">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <p class="card-text">@item.Price $</p>
-                        <a href="/Home/Checkout/@item.Id" class="btn btn-primary">Buy</a>
+    <!-- Hero Section -->
+    <div class="page-header text-center" style="padding: 60px 0; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 20px; margin-bottom: 40px; position: relative; overflow: hidden;">
+        <div style="position: relative; z-index: 2;">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-user-graduate me-3"></i>
+                @(currentLang == "tr" ? "Kişisel Antrenör Hizmetleri" : "Personal Trainer Services")
+            </h1>
+            <p class="lead fs-5">
+                @(currentLang == "tr" ? "Uzman antrenörlerimizle hedeflerinize daha hızlı ulaşın!" : "Reach your goals faster with our expert trainers!")
+            </p>
+        </div>
+    </div>
+
+    <!-- Trainer Features Section -->
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: white; height: 100%;">
+                <i class="fas fa-dumbbell fa-3x mb-3"></i>
+                <h5>@(currentLang == "tr" ? "Kişiselleştirilmiş Program" : "Personalized Program")</h5>
+                <p class="small">@(currentLang == "tr" ? "Size özel antrenman programları" : "Custom workout programs for you")</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center p-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 20px; color: white; height: 100%;">
+                <i class="fas fa-chart-line fa-3x mb-3"></i>
+                <h5>@(currentLang == "tr" ? "İlerleme Takibi" : "Progress Tracking")</h5>
+                <p class="small">@(currentLang == "tr" ? "Gelişiminizi takip edelim" : "Let's track your progress")</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center p-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 20px; color: white; height: 100%;">
+                <i class="fas fa-apple-alt fa-3x mb-3"></i>
+                <h5>@(currentLang == "tr" ? "Beslenme Danışmanlığı" : "Nutrition Counseling")</h5>
+                <p class="small">@(currentLang == "tr" ? "Beslenme planı desteği" : "Nutrition plan support")</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="feature-card text-center p-4" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 20px; color: white; height: 100%;">
+                <i class="fas fa-calendar-check fa-3x mb-3"></i>
+                <h5>@(currentLang == "tr" ? "Esnek Randevu" : "Flexible Appointments")</h5>
+                <p class="small">@(currentLang == "tr" ? "Size uygun saatlerde antrenman" : "Training at convenient times")</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trainers Section -->
+    <div class="section-header text-center mb-5">
+        <h2 style="color: #2c3e50; font-weight: 700;">
+            @(currentLang == "tr" ? "🏆 Uzman Antrenörlerimiz" : "🏆 Our Expert Trainers")
+        </h2>
+        <p class="lead text-muted">
+            @(currentLang == "tr" ? "Sertifikalı ve deneyimli antrenörlerimizle tanışın" : "Meet our certified and experienced trainers")
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Trainer 1 - Alex Johnson -->
+        <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="trainer-card" style="background: white; border-radius: 25px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%;">
+                <div class="trainer-image text-center mb-4">
+                    <div class="trainer-avatar" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="specialty-badge mt-3">
+                        <span class="badge px-3 py-2" style="background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 20px; color: white; font-size: 0.85rem;">
+                            @(currentLang == "tr" ? "Güç Antrenmanı Uzmanı" : "Strength Training Expert")
+                        </span>
                     </div>
                 </div>
+                <div class="trainer-info text-center">
+                    <h4 style="color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Alex Johnson</h4>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">
+                        @(currentLang == "tr" ? "8 yıllık deneyim, ACSM sertifikalı" : "8 years experience, ACSM certified")
+                    </p>
+                    <div class="specialties mb-3">
+                        <span class="skill-tag">@(currentLang == "tr" ? "Powerlifting" : "Powerlifting")</span>
+                        <span class="skill-tag">@(currentLang == "tr" ? "Vücut Geliştirme" : "Bodybuilding")</span>
+                        <span class="skill-tag">@(currentLang == "tr" ? "Fonksiyonel Antrenman" : "Functional Training")</span>
+                    </div>
+                    <div class="trainer-stats mb-4">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div style="color: #667eea; font-weight: 700; font-size: 1.5rem;">150+</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Müşteri" : "Clients")</small>
+                            </div>
+                            <div class="col-4">
+                                <div style="color: #667eea; font-weight: 700; font-size: 1.5rem;">4.9</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Puan" : "Rating")</small>
+                            </div>
+                            <div class="col-4">
+                                <div style="color: #667eea; font-weight: 700; font-size: 1.5rem;">8</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Yıl" : "Years")</small>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn w-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 15px; padding: 12px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-calendar-plus me-2"></i>
+                        @(currentLang == "tr" ? "Randevu Al" : "Book Appointment")
+                    </button>
+                </div>
             </div>
-        }
-    }
+        </div>
+
+        <!-- Trainer 2 - Emma Williams -->
+        <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="trainer-card" style="background: white; border-radius: 25px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%;">
+                <div class="trainer-image text-center mb-4">
+                    <div class="trainer-avatar" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="specialty-badge mt-3">
+                        <span class="badge px-3 py-2" style="background: linear-gradient(45deg, #f093fb, #f5576c); border-radius: 20px; color: white; font-size: 0.85rem;">
+                            @(currentLang == "tr" ? "Yoga & Pilates Uzmanı" : "Yoga & Pilates Expert")
+                        </span>
+                    </div>
+                </div>
+                <div class="trainer-info text-center">
+                    <h4 style="color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Emma Williams</h4>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">
+                        @(currentLang == "tr" ? "6 yıllık deneyim, RYT-500 sertifikalı" : "6 years experience, RYT-500 certified")
+                    </p>
+                    <div class="specialties mb-3">
+                        <span class="skill-tag">@(currentLang == "tr" ? "Hatha Yoga" : "Hatha Yoga")</span>
+                        <span class="skill-tag">@(currentLang == "tr" ? "Pilates" : "Pilates")</span>
+                        <span class="skill-tag">@(currentLang == "tr" ? "Meditasyon" : "Meditation")</span>
+                    </div>
+                    <div class="trainer-stats mb-4">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div style="color: #f093fb; font-weight: 700; font-size: 1.5rem;">200+</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Müşteri" : "Clients")</small>
+                            </div>
+                            <div class="col-4">
+                                <div style="color: #f093fb; font-weight: 700; font-size: 1.5rem;">4.8</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Puan" : "Rating")</small>
+                            </div>
+                            <div class="col-4">
+                                <div style="color: #f093fb; font-weight: 700; font-size: 1.5rem;">6</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Yıl" : "Years")</small>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn w-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 15px; padding: 12px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-calendar-plus me-2"></i>
+                        @(currentLang == "tr" ? "Randevu Al" : "Book Appointment")
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trainer 3 - Michael Chen -->
+        <div class="col-xl-4 col-lg-6 col-md-6">
+            <div class="trainer-card" style="background: white; border-radius: 25px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; height: 100%;">
+                <div class="trainer-image text-center mb-4">
+                    <div class="trainer-avatar" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <div class="specialty-badge mt-3">
+                        <span class="badge px-3 py-2" style="background: linear-gradient(45deg, #4facfe, #00f2fe); border-radius: 20px; color: white; font-size: 0.85rem;">
+                            @(currentLang == "tr" ? "Kardiyovasküler Uzmanı" : "Cardio Expert")
+                        </span>
+                    </div>
+                </div>
+                <div class="trainer-info text-center">
+                    <h4 style="color: #2c3e50; font-weight: 600; margin-bottom: 10px;">Michael Chen</h4>
+                    <p style="color: #7f8c8d; margin-bottom: 15px;">
+                        @(currentLang == "tr" ? "10 yıllık deneyim, HIIT uzmanı" : "10 years experience, HIIT specialist")
+                    </p>
+                    <div class="specialties mb-3">
+                        <span class="skill-tag">@(currentLang == "tr" ? "HIIT" : "HIIT")</span>
+                        <span class="skill-tag">@(currentLang == "tr" ? "Crossfit" : "Crossfit")</span>
+                        <span class="skill-tag">@(currentLang == "tr" ? "Kilo Verme" : "Weight Loss")</span>
+                    </div>
+                    <div class="trainer-stats mb-4">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div style="color: #4facfe; font-weight: 700; font-size: 1.5rem;">300+</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Müşteri" : "Clients")</small>
+                            </div>
+                            <div class="col-4">
+                                <div style="color: #4facfe; font-weight: 700; font-size: 1.5rem;">4.9</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Puan" : "Rating")</small>
+                            </div>
+                            <div class="col-4">
+                                <div style="color: #4facfe; font-weight: 700; font-size: 1.5rem;">10</div>
+                                <small style="color: #7f8c8d;">@(currentLang == "tr" ? "Yıl" : "Years")</small>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn w-100" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; border-radius: 15px; padding: 12px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-calendar-plus me-2"></i>
+                        @(currentLang == "tr" ? "Randevu Al" : "Book Appointment")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="cta-section text-center mt-5 p-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; color: white;">
+        <h3 class="mb-3">@(currentLang == "tr" ? "🎯 Hedeflerinize Birlikte Ulaşalım!" : "🎯 Let's Reach Your Goals Together!")</h3>
+        <p class="lead mb-4">
+            @(currentLang == "tr" ? "Uzman antrenörlerimizle özel bir randevu alın ve fitness yolculuğunuza başlayın." : "Book a consultation with our expert trainers and start your fitness journey.")
+        </p>
+        <button class="btn btn-light btn-lg px-5" style="border-radius: 25px; font-weight: 600; color: #667eea;">
+            <i class="fas fa-phone-alt me-2"></i>
+            @(currentLang == "tr" ? "Hemen Ara: 0555 123 4567" : "Call Now: +1 555 123 4567")
+        </button>
+    </div>
 </div>
+
+<style>
+.skill-tag {
+    display: inline-block;
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.trainer-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important;
+}
+
+.trainer-card .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+@@media (max-width: 768px) {
+    .trainer-card {
+        margin-bottom: 30px;
+    }
+    
+    .feature-card {
+        margin-bottom: 20px;
+    }
+    
+    .trainer-avatar {
+        width: 100px !important;
+        height: 100px !important;
+        font-size: 40px !important;
+    }
+}
+</style>

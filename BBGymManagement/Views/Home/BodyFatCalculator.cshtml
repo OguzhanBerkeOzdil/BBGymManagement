@@ -1,138 +1,258 @@
 ﻿@model BBGymManagement.MVVM.BodyFatCalculatorModel
 
 @{
-    ViewBag.Title = "BodyFatCalculator";
+    var lang = ViewBag.CurrentLanguage as string ?? "tr";
+    ViewBag.Title = lang == "tr" ? "Vücut Yağ Oranı Hesaplayıcı - BB Gym" : "Body Fat Calculator - BB Gym";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Body Fat Calculator</h2>
+<div class="page-header text-center" style="padding: 40px 0; background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; border-radius: 15px; margin-bottom: 30px;">
+    <h1><i class="fas fa-calculator"></i> @(lang == "tr" ? "Vücut Yağ Oranı Hesaplayıcı" : "Body Fat Calculator")</h1>
+    <p class="lead">@(lang == "tr" ? "Sağlıklı yaşamın ilk adımı: Vücut kompozisyonunuzu öğrenin" : "First step to healthy living: Learn your body composition")</p>
+</div>
 
-@using (Html.BeginForm("BodyFatCalculator", "Home", FormMethod.Post,new {@id="MyForm"}))
-{
-    <div class="form-horizontal">
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
+<div class="row">
+    <div class="col-md-8">
+        <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h2 style="color: #2c3e50; margin-bottom: 25px;">📏 @(lang == "tr" ? "Ölçümlerinizi Girin" : "Enter Your Measurements")</h2>
+            
+            @using (Html.BeginForm("BodyFatCalculator", "Home", FormMethod.Post, new { @id = "MyForm" }))
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Age" style="font-weight: bold; color: #2c3e50;">
+                                <i class="fas fa-calendar-alt"></i> @(lang == "tr" ? "Yaşınız" : "Your Age") *
+                            </label>
+                            @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control", @placeholder = lang == "tr" ? "Örn: 25" : "e.g. 25", @style = "border-radius: 8px; padding: 12px;" } })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Height" style="font-weight: bold; color: #2c3e50;">
+                                <i class="fas fa-arrows-alt-v"></i> @(lang == "tr" ? "Boyunuz (cm)" : "Your Height (cm)") *
+                            </label>
+                            @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control", @placeholder = lang == "tr" ? "Örn: 175" : "e.g. 175", @style = "border-radius: 8px; padding: 12px;" } })
+                        </div>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Sex, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Sex, new { @class = "form-select form-control" })
-            </div>
-        </div>
+                <div class="form-group">
+                    <label for="Sex" style="font-weight: bold; color: #2c3e50;">
+                        <i class="fas fa-venus-mars"></i> @(lang == "tr" ? "Cinsiyetiniz" : "Your Gender") *
+                    </label>
+                    @Html.EnumDropDownListFor(model => model.Sex, new { @class = "form-control", @style = "border-radius: 8px; padding: 12px;" })
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NeckCircumference, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NeckCircumference, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="NeckCircumference" style="font-weight: bold; color: #2c3e50;">
+                                <i class="fas fa-circle"></i> @(lang == "tr" ? "Boyun Çevresi (cm)" : "Neck Circumference (cm)") *
+                            </label>
+                            @Html.EditorFor(model => model.NeckCircumference, new { htmlAttributes = new { @class = "form-control", @placeholder = lang == "tr" ? "Örn: 35" : "e.g. 35", @style = "border-radius: 8px; padding: 12px;" } })
+                            <small class="text-muted">@(lang == "tr" ? "Boyun çevrenizi ölçmek için en geniş kısmını kullanın" : "Use the widest part to measure your neck circumference")</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="WaistCircumference" style="font-weight: bold; color: #2c3e50;">
+                                <i class="fas fa-circle"></i> @(lang == "tr" ? "Bel Çevresi (cm)" : "Waist Circumference (cm)") *
+                            </label>
+                            @Html.EditorFor(model => model.WaistCircumference, new { htmlAttributes = new { @class = "form-control", @placeholder = lang == "tr" ? "Örn: 80" : "e.g. 80", @style = "border-radius: 8px; padding: 12px;" } })
+                            <small class="text-muted">@(lang == "tr" ? "Bel çevrenizi en dar noktasından ölçün" : "Measure your waist at the narrowest point")</small>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.WaistCircumference, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.WaistCircumference, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
+                <div class="form-group">
+                    <label for="HipCircumference" style="font-weight: bold; color: #2c3e50;" id="LabelHipCircumference">
+                        <i class="fas fa-circle"></i> @(lang == "tr" ? "Kalça Çevresi (cm)" : "Hip Circumference (cm)") *
+                    </label>
+                    @Html.EditorFor(model => model.HipCircumference, new { htmlAttributes = new { @class = "form-control", @placeholder = lang == "tr" ? "Örn: 95" : "e.g. 95", @style = "border-radius: 8px; padding: 12px;" } })
+                    <small class="text-muted">@(lang == "tr" ? "Kalça çevrenizi en geniş noktasından ölçün" : "Measure your hip at the widest point")</small>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.HipCircumference, htmlAttributes: new { @class = "control-label col-md-2", @id = "LabelHipCircumference" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HipCircumference, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="btnSubmit" type="submit" value="Calculate" class="btn btn-default" />
-            </div>
+                <div class="text-center" style="margin-top: 30px;">
+                    <button id="btnSubmit" type="submit" class="btn btn-success btn-lg" style="background: linear-gradient(45deg, #27ae60, #2ecc71); border: none; border-radius: 8px; padding: 15px 40px;">
+                        <i class="fas fa-calculator"></i> @(lang == "tr" ? "Hesapla" : "Calculate")
+                    </button>
+                </div>
+            }
         </div>
     </div>
-}
-<div class="bg-success text-center" style="padding:20px" id="result">
-    <label style="font-weight:bold; font-size:20px">Body fat: @ViewBag.BodyFat %</label>
-    <div>
-        <p>
-            The US Navy body fat standards
-            The limit of body fat percentage for US Navy service members:
-        </p>
+    
+    <div class="col-md-4">
+        <!-- Info Card -->
+        <div style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 20px;">
+            <h3 style="margin-bottom: 20px;"><i class="fas fa-info-circle"></i> @(lang == "tr" ? "Nasıl Ölçülür?" : "How to Measure?")</h3>
+            
+            <div style="margin-bottom: 15px;">
+                <h5><i class="fas fa-circle"></i> @(lang == "tr" ? "Boyun" : "Neck")</h5>
+                <p style="font-size: 14px; margin-bottom: 0;">@(lang == "tr" ? "Adam elmasının hemen altından, en geniş kısmından ölçün." : "Measure from just below the Adam's apple, at the widest part.")</p>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <h5><i class="fas fa-circle"></i> @(lang == "tr" ? "Bel" : "Waist")</h5>
+                <p style="font-size: 14px; margin-bottom: 0;">@(lang == "tr" ? "Göbek deliğinin 2-3 cm üstünden, en dar kısmından ölçün." : "Measure 2-3 cm above the navel, at the narrowest part.")</p>
+            </div>
+            
+            <div>
+                <h5><i class="fas fa-circle"></i> @(lang == "tr" ? "Kalça (Kadınlar)" : "Hip (Women)")</h5>
+                <p style="font-size: 14px; margin-bottom: 0;">@(lang == "tr" ? "Kalçanın en geniş kısmından, ayakta dururken ölçün." : "Measure at the widest part of the hip while standing.")</p>
+            </div>
+        </div>
+        
+        <!-- Tips Card -->
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h4 style="color: #2c3e50; margin-bottom: 20px;"><i class="fas fa-lightbulb"></i> @(lang == "tr" ? "Ölçüm İpuçları" : "Measurement Tips")</h4>
+            <ul style="color: #34495e; line-height: 1.6;">
+                @if (lang == "tr")
+                {
+                    <li>Ölçümleri sabah, aç karnına yapın</li>
+                    <li>Meter esnek olmamalı, gergin tutun</li>
+                    <li>Nefes verir pozisyonda ölçün</li>
+                    <li>Ayda bir kez ölçüm yapın</li>
+                    <li>Aynı saatte ölçüm yapmaya dikkat edin</li>
+                }
+                else
+                {
+                    <li>Take measurements in the morning, on an empty stomach</li>
+                    <li>Keep the tape measure firm, not loose</li>
+                    <li>Measure while exhaling</li>
+                    <li>Take measurements once a month</li>
+                    <li>Be consistent with timing</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
 
-        <p>Age 18 to 21 - 22% for males, 33% for females;</p>
-        <p>Age 22 to 29 - 23% for males, 34% for females; </p>
-        <p>Age 30 to 39 - 24% for males, 35% for females; </p>
-        <p>Age over 40 - 26% for males, 36% for females.  </p>
+<!-- Results Section -->
+<div class="row" style="margin-top: 30px;" id="result">
+    <div class="col-md-12">
+        <div class="text-center" style="background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-chart-pie"></i> @(lang == "tr" ? "Sonuçlarınız" : "Your Results")</h2>
+            <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+                <h1 style="font-size: 4em; margin: 0; font-weight: bold;">@ViewBag.BodyFat%</h1>
+                <p style="font-size: 20px; margin: 0;">@(lang == "tr" ? "Vücut Yağ Oranınız" : "Your Body Fat Percentage")</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6" style="margin-bottom: 20px;">
+                    <h4><i class="fas fa-male"></i> @(lang == "tr" ? "Erkekler İçin Referans Değerleri" : "Reference Values for Men")</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 5px;">@(lang == "tr" ? "18-21 yaş" : "18-21 years"): <strong>%22</strong></li>
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 5px;">@(lang == "tr" ? "22-29 yaş" : "22-29 years"): <strong>%23</strong></li>
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 5px;">@(lang == "tr" ? "30-39 yaş" : "30-39 years"): <strong>%24</strong></li>
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">@(lang == "tr" ? "40+ yaş" : "40+ years"): <strong>%26</strong></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4><i class="fas fa-female"></i> @(lang == "tr" ? "Kadınlar İçin Referans Değerleri" : "Reference Values for Women")</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 5px;">@(lang == "tr" ? "18-21 yaş" : "18-21 years"): <strong>%33</strong></li>
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 5px;">@(lang == "tr" ? "22-29 yaş" : "22-29 years"): <strong>%34</strong></li>
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-bottom: 5px;">@(lang == "tr" ? "30-39 yaş" : "30-39 years"): <strong>%35</strong></li>
+                        <li style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">@(lang == "tr" ? "40+ yaş" : "40+ years"): <strong>%36</strong></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <p style="font-size: 14px; opacity: 0.9;">
+                    @(lang == "tr" ? "* Bu değerler US Navy standartlarına göre hesaplanmıştır. Daha detaylı analiz için bir sağlık uzmanına danışmanızı öneririz." : "* These values are calculated according to US Navy standards. We recommend consulting a health professional for more detailed analysis.")
+                </p>
+                <a href="@Url.Action("GymMembership", "Category")" class="btn btn-warning btn-lg" style="margin-top: 15px; background: linear-gradient(45deg, #f39c12, #e67e22); border: none;">
+                    <i class="fas fa-rocket"></i> @(lang == "tr" ? "Hedeflerinize Ulaşmak İçin Üye Olun!" : "Join Now to Reach Your Goals!")
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        // İlk yüklemede gizle
+        $("#HipCircumference").closest('.form-group').hide();
+        $("#result").hide();
+        
+        // Eğer sonuç varsa göster
+        if (@ViewBag.BodyFat != 9999) {
+            $("#result").show();
+            $('html, body').animate({
+                scrollTop: $("#result").offset().top
+            }, 1000);
+        }
+        
+        // Cinsiyet değiştiğinde kalça ölçümü göster/gizle
+        $("#Sex").on('change', function () {
+            if (this.value == 20) { // Female
+                $("#HipCircumference").closest('.form-group').show();
+            } else {
+                $("#HipCircumference").closest('.form-group').hide();
+            }
+        });
+        
+        // Sayfa yüklendiğinde cinsiyet kontrolü
+        if ($("#Sex").val() == 20) {
+            $("#HipCircumference").closest('.form-group').show();
+        }
+    });
 
     $("#btnSubmit").click(function (event) {
         event.preventDefault();
         var result = true;
-        if ($("#Age").val() <= 0) {
+        var errorMessage = "";
+        
+        // Validasyon kontrolleri
+        if ($("#Age").val() <= 0 || $("#Age").val() == "") {
             $("#Age").focus();
+            errorMessage = '@(lang == "tr" ? "Lütfen geçerli bir yaş girin." : "Please enter a valid age.")';
             result = false;
         }
-        else if ($("#Height").val() <= 0) {
+        else if ($("#Height").val() <= 0 || $("#Height").val() == "") {
             $("#Height").focus();
+            errorMessage = '@(lang == "tr" ? "Lütfen geçerli bir boy değeri girin." : "Please enter a valid height value.")';
             result = false;
         }
-        else if ($("#Sex").val() == 0) {
+        else if ($("#Sex").val() == "" || $("#Sex").val() == 0) {
             $("#Sex").focus();
+            errorMessage = '@(lang == "tr" ? "Lütfen cinsiyetinizi seçin." : "Please select your gender.")';
             result = false;
         }
-        else if ($("#NeckCircumference").val() <= 0) {
+        else if ($("#NeckCircumference").val() <= 0 || $("#NeckCircumference").val() == "") {
             $("#NeckCircumference").focus();
+            errorMessage = '@(lang == "tr" ? "Lütfen geçerli bir boyun çevresi girin." : "Please enter a valid neck circumference.")';
             result = false;
         }
-        else if ($("#WaistCircumference").val() <= 0) {
+        else if ($("#WaistCircumference").val() <= 0 || $("#WaistCircumference").val() == "") {
             $("#WaistCircumference").focus();
+            errorMessage = '@(lang == "tr" ? "Lütfen geçerli bir bel çevresi girin." : "Please enter a valid waist circumference.")';
             result = false;
         }
-        else if ($("#Sex").val() == 20 && $("#HipCircumference").val() <= 0) {
+        else if ($("#Sex").val() == 20 && ($("#HipCircumference").val() <= 0 || $("#HipCircumference").val() == "")) {
             $("#HipCircumference").focus();
+            errorMessage = '@(lang == "tr" ? "Lütfen geçerli bir kalça çevresi girin." : "Please enter a valid hip circumference.")';
             result = false;
-        }
-        else {
-            result = true;
         }
 
-        if (result==true) {
+        if (result == false) {
+            // Error toast göster
+            var errorText = '@(lang == "tr" ? "Hata!" : "Error!")';
+            $('body').append('<div class="alert alert-danger alert-dismissible" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>' + errorText + '</strong> ' + errorMessage + '</div>');
+            
+            // 3 saniye sonra otomatik kapat
+            setTimeout(function() {
+                $('.alert').fadeOut();
+            }, 3000);
+        } else {
+            // Loading indicator göster
+            var calculatingText = '@(lang == "tr" ? "Hesaplanıyor..." : "Calculating...")';
+            $("#btnSubmit").html('<i class="fas fa-spinner fa-spin"></i> ' + calculatingText);
+            $("#btnSubmit").prop('disabled', true);
+            
+            // Form gönder
             $("#MyForm").submit();
         }
-
     });
-
-    $("#HipCircumference").hide();
-    $("#LabelHipCircumference").hide();
-    $("#result").hide();
-    if (@ViewBag.BodyFat !=9999) {
-        $("#result").show();
-    }
-    if ($("#Sex").val()==20) {
-        $("#LabelHipCircumference").show();
-        $("#HipCircumference").show();
-    }
-    $("#Sex").on('change', function () {
-        if (this.value == 20) {
-            $("#LabelHipCircumference").show();
-            $("#HipCircumference").show();
-        }
-        else {
-            $("#HipCircumference").hide();
-            $("#LabelHipCircumference").hide();
-        }
-    });
-
-
-
 </script>

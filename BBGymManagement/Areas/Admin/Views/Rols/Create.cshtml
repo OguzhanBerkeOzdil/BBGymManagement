@@ -1,33 +1,58 @@
 ﻿@model BBGymManagement.Models.Entities.Rol
 
 @{
-    ViewBag.Title = "Create";
+    var currentLang = ViewBag.CurrentLanguage as string ?? Session["Language"] as string ?? "en";
+    ViewBag.Title = currentLang == "tr" ? "Yeni Rol Ekle" : "Add New Role";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Rol</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+<div class="admin-page-container" style="padding: 30px;">
+    <!-- Page Header -->
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #2c3e50; font-weight: 700; margin-bottom: 5px;">
+                <i class="fas fa-user-tag me-3"></i>@(currentLang == "tr" ? "Yeni Rol Ekle" : "Add New Role")
+            </h2>
+            <p class="text-muted">@(currentLang == "tr" ? "Sistemde yeni rol tanımla" : "Define a new role in the system")</p>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+        <div>
+            <a href="@Url.Action("Index")" class="btn btn-secondary" style="border-radius: 15px; padding: 12px 25px;">
+                <i class="fas fa-arrow-left me-2"></i>@(currentLang == "tr" ? "Geri Dön" : "Back")
+            </a>
         </div>
+    </div>
+
+    <!-- Create Form -->
+    <div class="card" style="border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div class="card-header" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; border-radius: 20px 20px 0 0; padding: 20px;">
+            <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>@(currentLang == "tr" ? "Rol Bilgileri" : "Role Information")</h5>
+        </div>
+        <div class="card-body" style="padding: 30px;">
+            @using (Html.BeginForm("Create", "Rols", FormMethod.Post, new { @class = "modern-form" })) 
+            {
+                @Html.AntiForgeryToken()
+                
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <div class="form-group mb-4">
+                            @Html.LabelFor(model => model.Name, currentLang == "tr" ? "Rol Adı" : "Role Name", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = currentLang == "tr" ? "Rol adını giriniz..." : "Enter role name..." } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 15px; padding: 15px 40px; font-weight: 600;">
+                                <i class="fas fa-save me-2"></i>@(currentLang == "tr" ? "Rol Oluştur" : "Create Role")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
     </div>
 }
 

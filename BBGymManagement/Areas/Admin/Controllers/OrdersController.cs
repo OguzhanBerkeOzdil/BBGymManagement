@@ -32,7 +32,19 @@ namespace BBGymManagement.Areas.Admin.Controllers
             {
                 var customer = _customerService.GetById(item.UserId);
                 var product = _productService.GetById(item.ProductId);
-                orders.Add(new OrderViewModel { Id = item.Id, CustomerName = customer.Name + " " + customer.Surname, FinishTime = item.FinishTime, TotalPrice = item.TotalPrice, ProductName = product.Name, IsActive = item.IsActive });
+                
+                string customerName = customer != null ? customer.Name + " " + customer.Surname : "Bilinmeyen Müşteri";
+                string productName = product != null ? product.Name : "Bilinmeyen Ürün";
+                
+                orders.Add(new OrderViewModel 
+                { 
+                    Id = item.Id, 
+                    CustomerName = customerName, 
+                    FinishTime = item.FinishTime, 
+                    TotalPrice = item.TotalPrice, 
+                    ProductName = productName, 
+                    IsActive = item.IsActive 
+                });
             }
             return View(orders);
         }
@@ -128,6 +140,76 @@ namespace BBGymManagement.Areas.Admin.Controllers
         {
             _orderService.Remove(id);
             return RedirectToAction("Index");
+        }
+
+        // GET: Admin/Orders/Create
+        public ActionResult Create()
+        {
+            ViewBag.Customers = _customerService.GetAll().Select(c => new SelectListItem 
+            { 
+                Value = c.Id.ToString(), 
+                Text = c.Name + " " + c.Surname 
+            }).ToList();
+
+            ViewBag.Products = _productService.GetAll().Select(p => new SelectListItem 
+            { 
+                Value = p.Id.ToString(), 
+                Text = p.Name + " - " + p.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR")) 
+            }).ToList();
+
+            return View();
+        }
+
+        // POST: Admin/Orders/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Order order)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Ürün bilgilerini al
+                    var product = _productService.GetById(order.ProductId);
+                    if (product != null)
+                    {
+                        order.TotalPrice = product.Price;
+                        order.FinishTime = DateTime.Now.AddDays(product.Day);
+                        order.IsActive = true;
+                        
+                        _orderService.Add(order);
+                        TempData["SuccessMessage"] = "Sipariş başarıyla oluşturuldu!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Seçilen ürün bulunamadı!";
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Lütfen tüm alanları doğru şekilde doldurun!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Sipariş oluşturulurken bir hata oluştu: " + ex.Message;
+            }
+
+            // Hata durumunda dropdown'ları tekrar doldur
+            ViewBag.Customers = _customerService.GetAll().Select(c => new SelectListItem 
+            { 
+                Value = c.Id.ToString(), 
+                Text = c.Name + " " + c.Surname 
+            }).ToList();
+
+            ViewBag.Products = _productService.GetAll().Select(p => new SelectListItem 
+            { 
+                Value = p.Id.ToString(), 
+                Text = p.Name + " - " + p.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR")) 
+            }).ToList();
+
+            return View(order);
         }
     }
 }
